@@ -1,5 +1,6 @@
 import java.sql.*;
 
+//hello world
 class sel_prdct
 {
    public static void main (Strings args[])  //throws SQLException
