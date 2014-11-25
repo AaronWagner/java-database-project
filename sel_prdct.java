@@ -3,7 +3,7 @@ import java.sql.*;
 //hello world
 class sel_prdct
 {
-   public static void main (Strings args[])  //throws SQLException
+   public static void main (String args[])  //throws SQLException
    
    {
       try
@@ -17,10 +17,10 @@ class sel_prdct
       }
       
       
-      Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin@olympia.unfcsd.unf.edu:1521dworcl", "username" "password"
+      Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin@olympia.unfcsd.unf.edu:1521dworcl", "teama5dm2f14", "team5ghjptw");
       
       Statement mystatment=myconnection.createStatment();
-      ResultSet rset = stmt.executeQuery ("select * from TABLE");   //read javadocs for ResultsSet
+      ResultSet rset = stmt.executeQuery ("select * from Course");   //read javadocs for ResultsSet
       
       while (rset.next())
       {
