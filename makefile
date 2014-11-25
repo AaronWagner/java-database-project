@@ -1,2 +1,4 @@
-sel_prdct.class:sel_prdct.java
-	javac -cp ojdbc.jar sel_prdct.java
+sel_prdct: sel_prdct.class
+	java -cp :/usr/lib/oracle/11.2/client64/lib/ojdbc6.jar sel_prdct sel_prdct.class
+sel_prdct.class: sel_prdct.java
+	javac -cp :/usr/lib/oracle/11.2/client64/lib/ojdbc6.jar sel_prdct.java
