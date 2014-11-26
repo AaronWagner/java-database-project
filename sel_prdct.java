@@ -17,17 +17,23 @@ class sel_prdct
          System.out.print(e.getStackTrace() +"\n");
          
       }
-      
-      
-      Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin@olympia.unfcsd.unf.edu:1521dworcl", "teama5dm2f14", "team5ghjptw");
-      
-      Statement mystatment=myconnection.createStatement();
-      ResultSet rset = mystatment.executeQuery ("select * from Course");   //read javadocs for ResultsSet
-      
-      while (rset.next())
+      try
       {
-         System.out.println(rset.getString(1)+" "+rset.getString(2)+". . . \n");
+         Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+         
+         Statement mystatment=myconnection.createStatement();
+         ResultSet rset = mystatment.executeQuery ("select * from Course");   //read javadocs for ResultsSet
+         
+         while (rset.next())
+         {
+            System.out.println(rset.getString(1)+" "+rset.getString(2)+". . . \n");
+         }
       }
+      catch (Exception e)
+      {
+         System.out.println(e.getMessage());
+         System.out.println(e.getStackTrace().toString());
+      }   
    
    }
 
