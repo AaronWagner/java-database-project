@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 //Please note for ResultSet.getString() the first colum is colum 1 not 0
 
@@ -15,7 +16,7 @@ class DataProject
    public static void main (String args[])  //throws SQLException
    
    {
-      DataProject myDataProject=newDataProject();
+      DataProject myDataProject=new DataProject();
       
       try
       {
@@ -26,8 +27,8 @@ class DataProject
          System.out.print(e.getStackTrace() +"\n");
        
       }
-      initalizeValues();
-      displayCourseRequest("*"); 
+      myDataProject.initalizeValues();
+      myDataProject.displayCourseRequest("*"); 
        
    }      
    
@@ -35,64 +36,81 @@ class DataProject
    {
       //initalizes courses ALL user inputed courses should be checked as valid via the testCourseInputMethod
       ResultSet courseResult=makeQuery("select course_number from course");          
-      while (courseResult.next())
-      {
-         courseNumbers.add(courseResult.getString(1);
-      }  
-      
+		try
+		{
+		  while (courseResult.next())
+		  {
+			 courseNumbers.add(courseResult.getString(1));
+		  }  
+		}
+		catch (Exception e)
+		{
+			 System.out.println(e.getMessage());
+			 System.out.println(e.getStackTrace().toString());
+		}
    }
    
-   String validateCourseNumber(String userInputCourseNumber)
+   boolean validateCourseNumber(String userInputCourseNumber)
    {
       boolean inputIsACourse=false;
       for (String courseNumber: courseNumbers)
       {
-         if (courseNumber.equals(userInputCourseNumber.trim()) {output=true; break;}
+         if (courseNumber.equals(userInputCourseNumber.trim())) {inputIsACourse=true; break;}
       } 
       return  inputIsACourse;  
    }
    
    
-      
-   ResultSet makeQuery(String query)
+      //Todo make makeQuery blocks handel SQLException.
+   ResultSet makeQuery(String query)throws SQLException
    {
-      ResultSet output;
+      
    
       try
       {
          Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
          
          Statement mystatment=myconnection.createStatement();
-         ResultSet rset = mystatment.executeQuery ("select * from Course");   //read javadocs for ResultsSet
-                     
+         ResultSet output = mystatment.executeQuery ("select * from Course");   //read javadocs for ResultsSet
+		  return output;				
       }
+	  /*
       catch (Exception e)
       {
          System.out.println(e.getMessage());
          System.out.println(e.getStackTrace().toString());
+		 System.exit(0);
       }
+	  */
       
    }
 
    void displayCourseRequest (String course)
    {
-      String studentQuery=("Select * from student_request WHERE course_number = '"+course+"'"; 
+      String studentQuery=("Select * from student_request WHERE course_number = '"+course+"'"); 
       ResultSet studentResults=makeQuery(studentQuery);
-      
-      while (studentResults.next())
-      {
-         //String 2 is not used it is the course number
-         System.out.println(""); //Todo insert column lables here
-         System.out.println(studentResults.getstring(1)+"/"+studentResults.getstring(3)+"/"+studentResults.getstring(4)+"/"+studentResults.getstring(5)+"/"+studentResults.getstring(6)+"/"+studentResults.getstring(7)+"/"+studentResults.getstring(8)+"/");
-      }
-      String facultyQuery=("Select * from faculty_request WHERE course_number = '"+course+"'"; 
-      ResultSet facultyResults=makeQuery(studentQuery);
-      while (studentResults.next())
-      {
-         //String 2 is not used it is the course number
-         System.out.println(""); //Todo insert column lables here
-         System.out.println(facultyResults.getstring(1)+"/"+facultyResults.getstring(3)+"/"+facultyResults.getstring(4)+"/"+facultyResults.getstring(5)+"/"+facultyResults.getstring(6)+"/"+facultyResults.getstring(7)+"/"+facultyResults.getstring(8)+"/");
-      }
+      try
+	  {
+		  while (studentResults.next())
+		  {
+			 //String 2 is not used it is the course number
+			 System.out.println(""); //Todo insert column lables here
+			 System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/"+studentResults.getString(8)+"/");
+		  }
+		  String facultyQuery=("Select * from faculty_request WHERE course_number = '"+course+"'"); 
+		  ResultSet facultyResults=makeQuery(studentQuery);
+		  while (studentResults.next())
+		  {
+			 //String 2 is not used it is the course number
+			 System.out.println(""); //Todo insert column lables here
+			 System.out.println(facultyResults.getString(1)+"/"+facultyResults.getString(3)+"/"+facultyResults.getString(4)+"/"+facultyResults.getString(5)+"/"+facultyResults.getString(6)+"/"+facultyResults.getString(7)+"/"+facultyResults.getString(8)+"/");
+		  }
+	  }
+	  catch (Exception e)
+	  {
+		 System.out.println(e.getMessage());
+         System.out.println(e.getStackTrace().toString());
+	  }
       //dispalyResults(studentResults);
    }
    
