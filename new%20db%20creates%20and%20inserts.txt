@@ -1,0 +1,44 @@
+CREATE TABLE users (id NUMBER(8) NOT NULL, user_type VARCHAR(7), password VARCHAR(15), user_name VARCHAR(30), user_permissions SMALLINT, PRIMARY KEY (id));
+CREATE TABLE faculty_request (id NUMBER(8) NOT NULL, course_number CHAR(8) NOT NULL, request_date DATE NOT NULL, semester VARCHAR(6) NOT NULL, request_year NUMBER(4) NOT NULL, week_day VARCHAR(4), time_of_day VARCHAR(9), course_rank SMALLINT, week_day_rank SMALLINT, time_of_day_rank SMALLINT, FOREIGN KEY(id) REFERENCES users, FOREIGN KEY (course_number) REFERENCES course, PRIMARY KEY(id, course_number, request_date, semester, request_year));
+CREATE TABLE student_request (id NUMBER(8) NOT NULL, course_number CHAR(8) NOT NULL, request_date DATE NOT NULL, semester VARCHAR(6) NOT NULL, request_year NUMBER(4) NOT NULL, week_day VARCHAR(4), time_of_day VARCHAR(9), FOREIGN KEY(id) REFERENCES users, FOREIGN KEY (course_number) REFERENCES course, PRIMARY KEY(id, course_number, request_date, semester, request_year));
+CREATE TABLE course (course_number CHAR(8) NOT NULL, course_name CHAR(30), credit_hours SMALLINT, required_or_elective CHAR(8), degree_track CHAR(2), concentration VARCHAR(23), semester VARCHAR(11), odd_or_even_year CHAR(4), PRIMARY KEY (course_number));
+
+INSERT INTO course VALUES ('CGS1570', 'Microcomp Apps', 3, 'required', 'IT', 'all', 'both', 'both');
+INSERT INTO course VALUES ('COP2551', 'Intro to OOP', 3, 'required', 'IT', 'all', 'both', 'both');
+
+INSERT INTO course VALUES ('COT3100', 'Comp Structures I', 3, 'required', 'IT', 'all', 'both', 'both');
+INSERT INTO course VALUES ('CGS4307', 'Info Proc: Org Persp', 3, 'required', 'IT', 'all', 'fall', 'both');
+INSERT INTO course VALUES ('COP3538', 'Data Structures using OOP', 4, 'required', 'IT', 'all', 'both', 'both');
+INSERT INTO course VALUES ('CDA3101', 'Intro to Comp Hardware', 4, 'required', 'IT', 'all', 'both', 'both');
+INSERT INTO course VALUES ('CNT4504', 'Networks and Distr Proc', 3, 'required', 'IT', 'all', 'spring', 'both');
+INSERT INTO course VALUES ('CIS4360', 'Comp Security Admin', 3, 'required', 'IT', 'all', 'spring', 'both');
+INSERT INTO course VALUES ('CIS4253', 'Legal and Ethical Issues', 3, 'required', 'IT', 'all', 'fall', 'both');
+INSERT INTO course VALUES ('CGS4308', 'Info Proc: Req', 3, 'required', 'IT', 'all', 'spring', 'both');
+
+INSERT INTO course VALUES ('CNT4406', 'Network Security/Management', 3, 'required', 'IT', 'networking', 'fall', 'both');
+INSERT INTO course VALUES ('CNT4704', 'Network Design/Plan', 3, 'required', 'IT', 'networking', 'fall', 'both');
+INSERT INTO course VALUES ('COP4813', 'Internet Programming', 3, 'required', 'IT', 'networking', 'spring', 'both');
+INSERT INTO course VALUES ('CIS4100', 'System Performance and Eval', 3, 'required', 'IT', 'networking', 'spring', 'both');
+
+INSERT INTO course VALUES ('CIS4615', 'Secure Software Dev', 3, 'required', 'IT', 'security administration', 'fall', 'both');
+INSERT INTO course VALUES ('CIS4365', 'Security Policy/Disaster Prep', 3, 'required', 'IT', 'security administration', 'spring', 'both');
+INSERT INTO course VALUES ('CIS4362', 'Computer Cryptography', 3, 'required', 'IT', 'security administration', 'spring', 'both');
+INSERT INTO course VALUES ('CIS4366', 'Computer Forensics', 3, 'required', 'IT', 'security administration', 'spring', 'both');
+INSERT INTO course VALUES ('CIS4364', 'IS Intrusion Detection', 3, 'required', 'IT', 'security administration', 'spring', 'both');
+
+INSERT INTO course VALUES ('CEN4535C', 'Dev Gaming and Mobile Apps', 4, 'required', 'IT', 'gaming and mobile', 'spring', 'odd');
+INSERT INTO course VALUES ('CNT4533C', 'Wireless Netw/Mobile Comp', 4, 'required', 'IT', 'gaming and mobile', 'spring', 'odd');
+INSERT INTO course VALUES ('CIS4593', 'Gaming and Mobile Caps I', 3, 'required', 'IT', 'gaming and mobile', 'fall', 'odd');
+INSERT INTO course VALUES ('CIS4594', 'Gaming and Mobile Caps II', 3, 'required', 'IT', 'gaming and mobile', 'spring', 'even');
+
+INSERT INTO course VALUES ('CEN4801', 'Systems Integration', 3, 'elective', 'IT', 'all', 'spring', 'both');
+INSERT INTO course VALUES ('CIS4510', 'Expert Sys/Decision Support', 3, 'elective', 'IT', 'all', 'fall', 'both');
+INSERT INTO course VALUES ('COP4640', 'OS Environments and Admin', 3, 'elective', 'IT', 'all', 'spring', 'both');
+INSERT INTO course VALUES ('COT4111', 'Comp Structures II', 3, 'elective', 'IT', 'all', 'fall', 'both');
+INSERT INTO course VALUES ('COT4560', 'Applied Graph Theory', 3, 'elective', 'IT', 'all', 'fall', 'both');
+INSERT INTO course VALUES ('CDA4010', 'Human Factors and Collab', 3, 'elective', 'IT', 'all', 'fall', 'both');
+INSERT INTO course VALUES ('COT4461', 'Computational Biology', 3, 'elective', 'IT', 'all', 'fall', 'both');
+
+INSERT INTO users VALUES (00006914, 'admin', '00006914', 'Snedden, Larry', 4); 
+INSERT INTO users VALUES (00005631, 'faculty', '00005631', 'Seyed-Abbassi, Behrooz', 2);
+INSERT INTO users VALUES (00607916, 'student', '00607916', 'Gotwalt, Adrienne', 1);
