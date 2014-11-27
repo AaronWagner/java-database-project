@@ -26,7 +26,8 @@ class DataProject
          System.out.print(e.getStackTrace() +"\n");
        
       }
-      initalizeValues() 
+      initalizeValues();
+      displayCourseRequest("*"); 
        
    }      
    
@@ -80,10 +81,18 @@ class DataProject
       
       while (studentResults.next())
       {
-         System.out.println(studentResults.getstring(1)+"/"studentResults.getstring(2)+"/"studentResults.getstring(3)+"/"studentResults.getstring(4)+"/"studentResults.getstring(5)+"/"studentResults.getstring(6)+"/"
+         //String 2 is not used it is the course number
+         System.out.println(""); //Todo insert column lables here
+         System.out.println(studentResults.getstring(1)+"/"+studentResults.getstring(3)+"/"+studentResults.getstring(4)+"/"+studentResults.getstring(5)+"/"+studentResults.getstring(6)+"/"+studentResults.getstring(7)+"/"+studentResults.getstring(8)+"/");
       }
       String facultyQuery=("Select * from faculty_request WHERE course_number = '"+course+"'"; 
       ResultSet facultyResults=makeQuery(studentQuery);
+      while (studentResults.next())
+      {
+         //String 2 is not used it is the course number
+         System.out.println(""); //Todo insert column lables here
+         System.out.println(facultyResults.getstring(1)+"/"+facultyResults.getstring(3)+"/"+facultyResults.getstring(4)+"/"+facultyResults.getstring(5)+"/"+facultyResults.getstring(6)+"/"+facultyResults.getstring(7)+"/"+facultyResults.getstring(8)+"/");
+      }
       //dispalyResults(studentResults);
    }
    
