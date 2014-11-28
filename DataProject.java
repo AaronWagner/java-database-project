@@ -31,7 +31,12 @@ class DataProject
       myDataProject.displayCourseRequest("*"); 
        
    }      
-   
+   void insertUser(int StudentNumber, String name, String permission)
+   {
+        String password=StudentNumber.toString();
+       
+
+   }
    void initalizeValues()
    {
       //initalizes courses ALL user inputed courses should be checked as valid via the testCourseInputMethod
