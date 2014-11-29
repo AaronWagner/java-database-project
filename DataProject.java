@@ -28,8 +28,21 @@ class DataProject
        
       }
       myDataProject.initalizeValues();
-      myDataProject.insertUser( 00015236, "Aaron Wagner", "Student", 1);
+      //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
        
+   }
+
+   //this method gives leading zeros to a integer it takes in a string because
+   //I intend to use Result.getString(columNumber) for all parameters
+   String displayNNumber (String number)
+   {
+      String output="";
+      //String rawNumber=Integer.toString(number);
+      for (i=0; i<(8-number.length()); i++)
+      {
+         output+="0";
+      }
+      output+=rawNumber;
    }
 
    void insertUser(int studentNumber, String name, String userType, int permission)

@@ -27,8 +27,8 @@
       <file leaf-file-name="DataProject.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DataProject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2829861" vertical-offset="347" max-vertical-offset="2431">
-              <caret line="30" column="32" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.6163194" vertical-offset="291" max-vertical-offset="2652">
+              <caret line="38" column="23" selection-start-line="38" selection-start-column="23" selection-end-line="38" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -61,8 +61,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-51" />
-    <option name="y" value="2" />
+    <option name="x" value="6" />
+    <option name="y" value="6" />
     <option name="width" value="1042" />
     <option name="height" value="752" />
   </component>
@@ -296,7 +296,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-51" y="2" width="1042" height="752" extended-state="0" />
+    <frame x="6" y="6" width="1042" height="752" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -372,8 +372,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DataProject.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2829861" vertical-offset="347" max-vertical-offset="2431">
-          <caret line="30" column="32" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.6163194" vertical-offset="291" max-vertical-offset="2652">
+          <caret line="38" column="23" selection-start-line="38" selection-start-column="23" selection-end-line="38" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
