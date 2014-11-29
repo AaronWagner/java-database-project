@@ -159,6 +159,7 @@ class DataProject
 	   int userFinished=0;
 	   
 	   String course_number = null;
+	   boolean isCourse=false;
 	   String request_date = null;
 	   String semester = null;
 	   int request_year = 0;
@@ -169,13 +170,22 @@ class DataProject
 	   
 	   while(userFinished==0){
 		   System.out.println("Please enter the following information\n");
+		   
 		   //get course number
-		   System.out.print("Course number (IE. COP2220): ");
-		   try {
-			 course_number = br.readLine();
-		   } catch (IOException ioe) {
-			 System.out.println("IO error trying to read your course number!");
-			 System.exit(1);
+		   isCourse=false;
+		   while(isCourse==false){
+			   System.out.print("Course number (IE. COP2220): ");
+			   try {
+				 course_number = br.readLine();
+			   } catch (IOException ioe) {
+				 System.out.println("IO error trying to read your course number!");
+				 System.exit(1);
+			   }
+			   
+			   isCourse=validateCourseNumber(course_number);
+			   if(isCourse==false){
+				   System.out.println("Course number entered does not exist in database, please try again: ");
+			   }
 		   }
 		  
 		  //get request date (no user input reqiured)
