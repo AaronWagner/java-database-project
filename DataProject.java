@@ -28,12 +28,30 @@ class DataProject
        
       }
       myDataProject.initalizeValues();
-      myDataProject.displayCourseRequest("*"); 
+      myDataProject.insertUser( 00015236, "Aaron Wagner", "Student", 1);
        
-   }      
-   void insertUser(int StudentNumber, String name, String permission)
+   }
+   
+   void insertUser(int StudentNumber, String name, String userType, int permission)
    {
         String password=StudentNumber.toString();
+      try
+      {
+         Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+
+         Statement mystatment=myconnection.createStatement();
+         ResultSet output = mystatment.executeQuery ("insert into USERS values "+StudentNumber", '"+userType+"', '"+password+"', '"+name+"', "+permission);   //read javadocs for ResultsSet
+
+      }
+
+      catch (Exception e)
+      {
+         System.out.println(e.getMessage());
+         System.out.println(e.getStackTrace().toString());
+         System.exit(0);
+      }
+
+
        
 
    }
@@ -79,14 +97,14 @@ class DataProject
          ResultSet output = mystatment.executeQuery ("select * from Course");   //read javadocs for ResultsSet
 		  return output;				
       }
-	  /*
+
       catch (Exception e)
       {
          System.out.println(e.getMessage());
          System.out.println(e.getStackTrace().toString());
 		 System.exit(0);
       }
-	  */
+
       
    }
 
