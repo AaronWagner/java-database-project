@@ -156,6 +156,7 @@ class DataProject
 	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	   int optionChoosen = -1;
 	   int tryAgain = 1;
+	   int userFinished=0;
 	   
 	   String course_number = null;
 	   String request_date = null;
@@ -165,132 +166,158 @@ class DataProject
 	   String time_of_day = null;
 	   
 	   System.out.println("Welcome to the student course request form");
-	   System.out.println("Please enter the following information\n");
 	   
-	   //get course number
-	   System.out.print("Course number (IE. COP2220): ");
-	   try {
-         course_number = br.readLine();
-       } catch (IOException ioe) {
-         System.out.println("IO error trying to read your course number!");
-         System.exit(1);
-       }
-      
-      //get request date (no user input reqiured)
-       DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy");
-	   Date date = new Date();
-	   request_date = dateFormat.format(date);
-	   
-	   //get semester
-	   while(tryAgain == 1){
-		   System.out.print("\nSelect a semester\nEnter 1 for Fall, 2 for Spring, or 3 for Summer: ");
+	   while(userFinished==0){
+		   System.out.println("Please enter the following information\n");
+		   //get course number
+		   System.out.print("Course number (IE. COP2220): ");
 		   try {
-			 optionChoosen = Integer.parseInt(br.readLine());
+			 course_number = br.readLine();
+		   } catch (IOException ioe) {
+			 System.out.println("IO error trying to read your course number!");
+			 System.exit(1);
+		   }
+		  
+		  //get request date (no user input reqiured)
+		   DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy");
+		   Date date = new Date();
+		   request_date = dateFormat.format(date);
+		   
+		   //get semester
+		   while(tryAgain == 1){
+			   System.out.print("\nSelect a semester\nEnter 1 for Fall, 2 for Spring, or 3 for Summer: ");
+			   try {
+				 optionChoosen = Integer.parseInt(br.readLine());
+			   } catch (IOException ioe) {
+				 System.out.println("IO error trying to read your course number!");
+				 System.exit(1);
+			   }
+			   
+			   if(optionChoosen==1){
+				   semester = "fall";
+				   tryAgain = 0;
+			   }
+			   else if(optionChoosen==2){
+				   semester = "spring";
+				   tryAgain = 0;
+			   }
+			   else if(optionChoosen==3){
+				   semester = "summer";
+				   tryAgain = 0;
+			   }
+			   else{
+				   System.out.println("------Incorrect input, please try again");
+				   tryAgain = 1;
+			   }
+		   }
+		   tryAgain = 1;
+		   
+		   //get request year
+		   System.out.print("\nEnter the year you wish to take the requested course: ");
+		   try {
+			 request_year = Integer.parseInt(br.readLine());
 		   } catch (IOException ioe) {
 			 System.out.println("IO error trying to read your course number!");
 			 System.exit(1);
 		   }
 		   
-		   if(optionChoosen==1){
-			   semester = "fall";
-			   tryAgain = 0;
+		   //get weekday
+		   while(tryAgain == 1){
+			   System.out.print("\nSelect the days you would prefer to take this course\n"
+						+"Enter 1 for MW, 2 for TR, 3 for MTWR, or 4 for TRF: ");
+			   try {
+				 optionChoosen = Integer.parseInt(br.readLine());
+			   } catch (IOException ioe) {
+				 System.out.println("IO error trying to read your course number!");
+				 System.exit(1);
+			   }
+			   
+			   if(optionChoosen==1){
+				   week_day = "mw";
+				   tryAgain = 0;
+			   }
+			   else if(optionChoosen==2){
+				   week_day = "tr";
+				   tryAgain = 0;
+			   }
+			   else if(optionChoosen==3){
+				   week_day = "mtwr";
+				   tryAgain = 0;
+			   }
+			   else if(optionChoosen==4){
+				   week_day = "trf";
+				   tryAgain = 0;
+			   }
+			   else{
+				   System.out.println("------Incorrect input, please try again");
+				   tryAgain = 1;
+			   }
 		   }
-		   else if(optionChoosen==2){
-			   semester = "spring";
-			   tryAgain = 0;
-		   }
-		   else if(optionChoosen==3){
-			   semester = "summer";
-			   tryAgain = 0;
-		   }
-		   else{
-			   System.out.println("------Incorrect input, please try again");
-			   tryAgain = 1;
-		   }
-	   }
-	   tryAgain = 1;
-	   
-	   //get request year
-	   System.out.print("\nEnter the year you wish to take the requested course: ");
-	   try {
-		 request_year = Integer.parseInt(br.readLine());
-	   } catch (IOException ioe) {
-		 System.out.println("IO error trying to read your course number!");
-		 System.exit(1);
-	   }
-	   
-	   //get weekday
-	   while(tryAgain == 1){
-		   System.out.print("\nSelect the days you would prefer to take this course\n"
-					+"Enter 1 for MW, 2 for TR, 3 for MTWR, or 4 for TRF: ");
-		   try {
-			 optionChoosen = Integer.parseInt(br.readLine());
-		   } catch (IOException ioe) {
-			 System.out.println("IO error trying to read your course number!");
-			 System.exit(1);
-		   }
+		   tryAgain = 1;
 		   
-		   if(optionChoosen==1){
-			   week_day = "mw";
-			   tryAgain = 0;
+		   //get time of day
+		   while(tryAgain == 1){
+			   System.out.print("\nSelect a time of day\nEnter 1 for morning, 2 for afternoon, or 3 for evening: ");
+			   try {
+				 optionChoosen = Integer.parseInt(br.readLine());
+			   } catch (IOException ioe) {
+				 System.out.println("IO error trying to read your course number!");
+				 System.exit(1);
+			   }
+			   
+			   if(optionChoosen==1){
+				   time_of_day = "morning";
+				   tryAgain = 0;
+			   }
+			   else if(optionChoosen==2){
+				   time_of_day = "afternoon";
+				   tryAgain = 0;
+			   }
+			   else if(optionChoosen==3){
+				   time_of_day = "evening";
+				   tryAgain = 0;
+			   }
+			   else{
+				   System.out.println("------Incorrect input, please try again");
+				   tryAgain = 1;
+			   }
 		   }
-		   else if(optionChoosen==2){
-			   week_day = "tr";
-			   tryAgain = 0;
-		   }
-		   else if(optionChoosen==3){
-			   week_day = "mtwr";
-			   tryAgain = 0;
-		   }
-		   else if(optionChoosen==4){
-			   week_day = "trf";
-			   tryAgain = 0;
-		   }
-		   else{
-			   System.out.println("------Incorrect input, please try again");
-			   tryAgain = 1;
-		   }
-	   }
-	   tryAgain = 1;
-	   
-	   //get time of day
-	   while(tryAgain == 1){
-		   System.out.print("\nSelect a time of day\nEnter 1 for morning, 2 for afternoon, or 3 for evening: ");
-		   try {
-			 optionChoosen = Integer.parseInt(br.readLine());
-		   } catch (IOException ioe) {
-			 System.out.println("IO error trying to read your course number!");
-			 System.exit(1);
-		   }
+		   tryAgain = 1;
+		   /*id NUMBER(8) NOT NULL, course_number CHAR(8) NOT NULL, request_date DATE NOT NULL, semester VARCHAR(6) NOT NULL, request_year 
+			NUMBER(4) NOT NULL, week_day VARCHAR(4), time_of_day VARCHAR(9),
+			*/
+		   System.out.println("Please confirm that the follow request is correct:");
+		   System.out.println("Student Number: 00"+studentNumber);
+		   System.out.println("Course Number: "+course_number);
+		   System.out.println("Semester: "+semester);
+		   System.out.println("Request Year: "+request_year);
+		   System.out.println("Days of the Week: "+week_day);
+		   System.out.println("Time of the Day: "+time_of_day);
 		   
-		   if(optionChoosen==1){
-			   time_of_day = "morning";
-			   tryAgain = 0;
-		   }
-		   else if(optionChoosen==2){
-			   time_of_day = "afternoon";
-			   tryAgain = 0;
-		   }
-		   else if(optionChoosen==3){
-			   time_of_day = "evening";
-			   tryAgain = 0;
-		   }
-		   else{
-			   System.out.println("------Incorrect input, please try again");
-			   tryAgain = 1;
+		   //another course request?
+		   while(tryAgain == 1){
+			   System.out.print("Do you have another course request? Enter 1 for YES, 0 for NO: ");
+			   try {
+				 optionChoosen = Integer.parseInt(br.readLine());
+			   } catch (IOException ioe) {
+				 System.out.println("IO error trying to read your course number!");
+				 System.exit(1);
+			   }
+			   
+			   if(optionChoosen==1){
+				   userFinished=0;
+				   tryAgain = 0;
+			   }
+			   else if(optionChoosen==0){
+				   userFinished = 1;
+				   tryAgain = 0;
+			   }
+			   else{
+				   System.out.println("------Incorrect input, please try again");
+				   tryAgain = 1;
+			   }
 		   }
 	   }
-	   tryAgain = 1;
-	   /*id NUMBER(8) NOT NULL, course_number CHAR(8) NOT NULL, request_date DATE NOT NULL, semester VARCHAR(6) NOT NULL, request_year 
-		NUMBER(4) NOT NULL, week_day VARCHAR(4), time_of_day VARCHAR(9),
-	    */
-	   System.out.println("Please confirm that the follow request is correct:");
-	   System.out.println("Student Number: 00"+studentNumber);
-	   System.out.println("Course Number: "+course_number);
-	   System.out.println("Semester: "+semester);
-	   System.out.println("Request Year: "+request_year);
-	   System.out.println("Days of the Week: "+week_day);
-	   System.out.println("Time of the Day: "+time_of_day);
    }
    
 }
