@@ -1,6 +1,9 @@
 CREATE TABLE users (id NUMBER(8) NOT NULL, user_type VARCHAR(7), password VARCHAR(15), user_name VARCHAR(30), user_permissions SMALLINT, PRIMARY KEY (id));
+
 CREATE TABLE faculty_request (id NUMBER(8) NOT NULL, course_number CHAR(8) NOT NULL, request_date DATE NOT NULL, semester VARCHAR(6) NOT NULL, request_year NUMBER(4) NOT NULL, week_day VARCHAR(4), time_of_day VARCHAR(9), course_rank SMALLINT, week_day_rank SMALLINT, time_of_day_rank SMALLINT, FOREIGN KEY(id) REFERENCES users, FOREIGN KEY (course_number) REFERENCES course, PRIMARY KEY(id, course_number, request_date, semester, request_year));
+
 CREATE TABLE student_request (id NUMBER(8) NOT NULL, course_number CHAR(8) NOT NULL, request_date DATE NOT NULL, semester VARCHAR(6) NOT NULL, request_year NUMBER(4) NOT NULL, week_day VARCHAR(4), time_of_day VARCHAR(9), FOREIGN KEY(id) REFERENCES users, FOREIGN KEY (course_number) REFERENCES course, PRIMARY KEY(id, course_number, request_date, semester, request_year));
+
 CREATE TABLE course (course_number CHAR(8) NOT NULL, course_name CHAR(30), credit_hours SMALLINT, required_or_elective CHAR(8), degree_track CHAR(2), concentration VARCHAR(23), semester VARCHAR(11), odd_or_even_year CHAR(4), PRIMARY KEY (course_number));
 
 INSERT INTO course VALUES ('CGS1570', 'Microcomp Apps', 3, 'required', 'IT', 'all', 'both', 'both');
