@@ -28,7 +28,7 @@ class DataProject
        
       }
       myDataProject.initalizeValues();
-      myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
+      //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
        
    }
 
@@ -36,7 +36,7 @@ class DataProject
    //I intend to use Result.getString(columNumber) for all parameters
    String displayNNumber (String number)
    {
-      String output=""
+      String output="";
       //String rawNumber=Integer.toString(number);
       for (i=0; i<(8-number.length()); i++)
       {
