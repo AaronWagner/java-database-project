@@ -40,8 +40,8 @@ class DataProject
          Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
 
          Statement mystatment=myconnection.createStatement();
-         String input = new String("insert into USERS values "+studentNumber+", '"+userType+"', '"+password+"', '"+name+"', "+permission);
-         ResultSet output = mystatment.executeQuery (input);   //read javadocs for ResultsSet
+         String input = new String("insert into USERS values ( "+studentNumber+", '"+userType+"', '"+password+"', '"+name+"', "+permission+")");
+         mystatment.executeQuery (input);   //read javadocs for ResultsSet
 
       }
 
