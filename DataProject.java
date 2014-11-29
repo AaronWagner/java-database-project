@@ -31,16 +31,17 @@ class DataProject
       myDataProject.insertUser( 00015236, "Aaron Wagner", "Student", 1);
        
    }
-   
-   void insertUser(int StudentNumber, String name, String userType, int permission)
+
+   void insertUser(int studentNumber, String name, String userType, int permission)
    {
-        String password=StudentNumber.toString();
+        String password=Integer.toString(studentNumber);
       try
       {
          Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
 
          Statement mystatment=myconnection.createStatement();
-         ResultSet output = mystatment.executeQuery ("insert into USERS values "+StudentNumber", '"+userType+"', '"+password+"', '"+name+"', "+permission);   //read javadocs for ResultsSet
+         String input = new String("insert into USERS values "+studentNumber+", '"+userType+"', '"+password+"', '"+name+"', "+permission);
+         ResultSet output = mystatment.executeQuery (input);   //read javadocs for ResultsSet
 
       }
 
@@ -58,9 +59,9 @@ class DataProject
    void initalizeValues()
    {
       //initalizes courses ALL user inputed courses should be checked as valid via the testCourseInputMethod
-      ResultSet courseResult=makeQuery("select course_number from course");          
-		try
-		{
+      try
+      {
+          ResultSet courseResult=makeQuery("select course_number from course");
 		  while (courseResult.next())
 		  {
 			 courseNumbers.add(courseResult.getString(1));
@@ -89,31 +90,26 @@ class DataProject
    {
       
    
-      try
-      {
+
          Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
          
          Statement mystatment=myconnection.createStatement();
          ResultSet output = mystatment.executeQuery ("select * from Course");   //read javadocs for ResultsSet
 		  return output;				
-      }
 
-      catch (Exception e)
-      {
-         System.out.println(e.getMessage());
-         System.out.println(e.getStackTrace().toString());
-		 System.exit(0);
-      }
 
-      
+
+
+
    }
 
    void displayCourseRequest (String course)
    {
-      String studentQuery=("Select * from student_request WHERE course_number = '"+course+"'"); 
-      ResultSet studentResults=makeQuery(studentQuery);
       try
-	  {
+      {
+         String studentQuery=("Select * from student_request WHERE course_number = '"+course+"'");
+         ResultSet studentResults=makeQuery(studentQuery);
+
 		  while (studentResults.next())
 		  {
 			 //String 2 is not used it is the course number
