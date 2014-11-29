@@ -1,5 +1,9 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.io.*;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 //Please note for ResultSet.getString() the first colum is colum 1 not 0
 
@@ -28,22 +32,24 @@ class DataProject
        
       }
       myDataProject.initalizeValues();
+      myDataProject.studentRequest(666982);
       //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
        
    }
 
    //this method gives leading zeros to a integer it takes in a string because
    //I intend to use Result.getString(columNumber) for all parameters
-   String displayNNumber (String number)
+   /*String displayNNumber (String number)
    {
       String output="";
+      int i;
       //String rawNumber=Integer.toString(number);
       for (i=0; i<(8-number.length()); i++)
       {
          output+="0";
       }
       output+=rawNumber;
-   }
+   }*/
 
    void insertUser(int studentNumber, String name, String userType, int permission)
    {
@@ -146,5 +152,30 @@ class DataProject
       //dispalyResults(studentResults);
    }
    
+   void studentRequest (int studentNumber ){
+	   /*id NUMBER(8) NOT NULL, course_number CHAR(8) NOT NULL, request_date DATE NOT NULL, semester VARCHAR(6) NOT NULL, request_year 
+		NUMBER(4) NOT NULL, week_day VARCHAR(4), time_of_day VARCHAR(9),
+	    */
+	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	   int optionChoosen;
+	   
+	   String course_number = null;
+	   String request_date = null;
+	   String semester = null;
+	   int request_year = null;
+	   String week_day = null;
+	   String time_of_day = null;
+	   
+	   System.out.println("Welcome to the student course request form");
+	   System.out.println("Please enter the following information\n");
+	   
+	   System.out.print("Course number (IE. COP2220): ");
+	   try {
+         course_number = br.readLine();
+      } catch (IOException ioe) {
+         System.out.println("IO error trying to read your course number!");
+         System.exit(1);
+      }
+   }
    
 }
