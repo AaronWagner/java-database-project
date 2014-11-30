@@ -23,9 +23,40 @@ class DataProject
    {
       DataProject myDataProject=new DataProject();
 
-       myDataProject.displayCourseRequest("COT4461");
+       try
+       {
+           Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+           Statement myStatment=myConnection.createStatement();
+           ResultSet courseResult=myStatment.executeQuery("select course_number from COURSE");
+
+           boolean isNotEmpty=false;
+           while (isNotEmpty=courseResult.next())
+           {
+               if (!isNotEmpty)
+               {
+                   break;
+               }
+           }
+           //courseResult.close();
+           if (!isNotEmpty)
+           {
+               System.out.println("The results were empty.");
+               System.exit(0);
+           }
+           System.out.println("Done loading courses");
+       }
+       catch (SQLException g)
+       {
+           System.out.println("SQLError in the result set:"+g.getCause()+"\n"+g.getMessage()+"\n"+g.getStackTrace());
+       }
+       catch (Exception f)
+       {
+           System.out.println("Error in the result set:"+f.getCause()+"\n"+f.getMessage()+"\n"+f.getStackTrace());
+       }
+
+       //myDataProject.displayCourseRequest("COT4461");
        //myDataProject.insertUser(12345678, "Mary Poppins", "Admin", 4);
-       myDataProject.initalizeValues();
+       //myDataProject.initalizeValues();
       /*
        if (myDataProject.validateCourseNumber("COT4461"))
        {
@@ -99,17 +130,23 @@ class DataProject
             /*if (courseResult.wasNull())
                 {System.out.println("Courseresult is null");}
             //SQL exception: no data read
+
             */
-          boolean isEmpty=true;
-          while (courseResult.next())
+          boolean isNotEmpty=false;
+          while (isNotEmpty=courseResult.next())
             {
+                if (!isNotEmpty)
+                {
+                    break;
+                }
                 courseNumbers.add(courseResult.getString("course_number"));
-                isEmpty=false;
+                //isNotEmpty=false;
             }
-            courseResult.close();
-            if (isEmpty)
+            //courseResult.close();
+            if (!isNotEmpty)
             {
-                System.out.println("The results were empty.")
+                System.out.println("The results were empty.");
+                System.exit(0);
             }
           System.out.println("Done loading courses");
         }
