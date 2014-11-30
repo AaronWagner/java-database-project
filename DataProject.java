@@ -58,12 +58,16 @@ class DataProject
        //myDataProject.insertUser(12345678, "Mary Poppins", "Admin", 4);
        */
        myDataProject.initalizeValues();
-      /*
+
        if (myDataProject.validateCourseNumber("COT4461"))
        {
            System.out.println("Found \"COT4461\"\n");
        }
-      */
+       else
+       {
+           System.out.println("Still didn't find it.");
+       }
+
      // myDataProject.studentRequest(666982);
       //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
        
@@ -109,7 +113,7 @@ class DataProject
    }
    void initalizeValues()
    {
-
+        courseNumbers=new ArrayList<String>();
        //ResultSet courseResult=null;
 
 
@@ -125,8 +129,9 @@ class DataProject
            boolean empty=true;
            while (isNotEmpty=courseResult.next())
            {
-
-               courseNumbers.add(courseResult.getString(1));
+               String aCourse=courseResult.getString(1).trim();
+               System.out.println("Course added: /"+aCourse+"/ \n");
+               courseNumbers.add(aCourse);
                if (!isNotEmpty)
                {
                    break;
@@ -154,16 +159,16 @@ class DataProject
    boolean validateCourseNumber(String userInputCourseNumber)
    {
       boolean inputIsACourse=false;
-      for (String courseNumber: courseNumbers)
+      if (courseNumbers.contains(userInputCourseNumber))
       {
-         if (courseNumber.equals(userInputCourseNumber.trim())) {inputIsACourse=true; break;}
-      } 
+          inputIsACourse=true;
+      }
       return  inputIsACourse;  
    }
    
    
       //Todo make makeQuery blocks handel SQLException.
-   /*ResultSet makeQuery(String query)throws SQLException
+   ResultSet makeQuery(String query)throws SQLException
    {
       
    
@@ -173,20 +178,65 @@ class DataProject
          Statement mystatment=myconnection.createStatement();
          ResultSet output = mystatment.executeQuery ("select * from Course");   //read javadocs for ResultsSet
 		  return output;				
-
-
-
-
-
    }
-    */
 
+
+
+   void displayfaculty (String requestedCourse, String week_day )
+   {
+       /*Day Listing - The same as course listing except the listing is based on the day and includes the following
+        order of information: day, the course information, times with related student information, and times with related
+        faculty information. */
+       try
+       {
+           Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+           Statement myStatment=myConnection.createStatement();
+           String studentQuery=("Select * from student_request WHERE course_number = '"+requestedCourse+"'"+"and week_day ='"+week_day+"'");
+           ResultSet studentResults=myStatment.executeQuery(studentQuery);
+       }
+       catch (Exception e)
+       {
+           System.out.println("Error Reterving course requests");
+           System.out.println(e.getMessage());
+           System.out.println(e.getStackTrace().toString());
+       }
+   }
+    void displayDay(String course, String day)
+    {
+        /*b. Day Listing - The same as course listing except the listing is based on the day and includes the following
+        order of information: day, the course information, times with related student information, and times with related
+        faculty information.
+         */
+
+    }
+    void displayTime()
+    {
+        /*c. Time Listing - The same as course listing except the listing is based on the time and includes the following
+        order of information: time, the course information, days with related student information, and days with related
+        faculty information.  */
+    }
+    void displayStudent()
+    {
+        /*d. Student Listing - The listing includes the information entered by the students on the form from area 1
+        including all student courses and matches the list with any courses, days, times in the faculty information.
+        */
+    }
+    void displayFaculty()
+    {
+        /*e. Faculty Listing - The listing includes the information entered by the faculty on the form from area 3 including
+        all student courses and matches the list with any courses, days, times in the student information. */
+    }
    void displayCourseRequest (String course)
    {
+       /*
+       a. Course Listing - The listing includes course information, information for students who request to take course,
+       student days and times, information for faculty who request to teach course, faculty days and times, any
+        additional information as decided on by the team.
+        */
       try
       {
           Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
-          Statement myStatment=myConnection.createStatement();
+         Statement myStatment=myConnection.createStatement();
          String studentQuery=("Select * from student_request WHERE course_number = '"+course+"'");
          ResultSet studentResults=myStatment.executeQuery(studentQuery);
 
