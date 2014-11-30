@@ -78,7 +78,7 @@ class DataProject
            System.out.println("Still didn't find it.");
        }
         */
-      myDataProject.studentRequest(666982);
+      myDataProject.studentRequest(666983);
       //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
        
    }
@@ -279,9 +279,10 @@ class DataProject
 	   int optionChoosen = -1;
 	   int tryAgain = 1;
 	   int userFinished=0;
+	   boolean submitRequest=false;
+	   boolean isCourse=false;
 	   
 	   String course_number = null;
-	   boolean isCourse=false;
 	   String request_date = null;
 	   String semester = null;
 	   int request_year = 0;
@@ -304,7 +305,7 @@ class DataProject
 				 System.exit(1);
 			   }
 			   
-			   isCourse=validateCourseNumber(course_number);
+			   isCourse=validateCourseNumber(course_number.toUpperCase());
 			   if(isCourse==false){
 				   System.out.println("Course number entered does not exist in database, please try again: ");
 			   }
@@ -312,7 +313,7 @@ class DataProject
 				   isCourse=true;
 			   }
 		   }
-		  
+		  course_number=course_number.toUpperCase();
 		  //get request date (no user input reqiured)
 		   DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy");
 		   Date date = new Date();
@@ -417,21 +418,64 @@ class DataProject
 				   tryAgain = 1;
 			   }
 		   }
+		   
+		   //confirm course request information
 		   tryAgain = 1;
-		   /*id NUMBER(8) NOT NULL, course_number CHAR(8) NOT NULL, request_date DATE NOT NULL, semester VARCHAR(6) NOT NULL, request_year 
-			NUMBER(4) NOT NULL, week_day VARCHAR(4), time_of_day VARCHAR(9),
-			*/
-		   System.out.println("Please confirm that the follow request is correct:");
-		   System.out.println("Student Number: 00"+studentNumber);
+		   System.out.println("\n\nIs the following request correct?");
+		   System.out.println("Student Number: N00"+studentNumber);
 		   System.out.println("Course Number: "+course_number);
 		   System.out.println("Semester: "+semester);
 		   System.out.println("Request Year: "+request_year);
 		   System.out.println("Days of the Week: "+week_day);
 		   System.out.println("Time of the Day: "+time_of_day);
+		   while(tryAgain == 1){
+			   System.out.print("-----Enter\n-----1 for YES\n-----0 for NO\n-----:");
+			   try {
+				 optionChoosen = Integer.parseInt(br.readLine());
+			   } catch (IOException ioe) {
+				 System.out.println("IO error trying to read your course number!");
+				 System.exit(1);
+			   }
+			   if(optionChoosen==1){
+				   tryAgain = 0;
+				   submitRequest = true;
+			   }
+			   else if(optionChoosen==0){
+				   tryAgain = 0;
+				   submitRequest = false;
+			   }
+			   else{
+				   System.out.println("------Incorrect input, please try again");
+				   tryAgain = 1;
+			   }
+		   }
+		   
+		   if(submitRequest == true){
+			  try
+			  {
+				 Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+				 Statement myStatment=myConnection.createStatement();
+				 String input = new String("insert into STUDENT_REQUEST values ( "+studentNumber+", '"+
+											course_number+"', '"+request_date +"', '"+semester +"', "+
+											request_year +", '"+week_day  +"', '"+time_of_day  +"')");
+				 System.out.println("Request successfully submitted");
+				 myStatment.executeQuery (input);   //read javadocs for ResultsSet
+
+			  }
+
+			  catch (Exception e)
+			  {
+				  System.out.println("error inserting STUDENT_REQUEST");
+				 System.out.println(e.getMessage());
+				 System.out.println(e.getStackTrace().toString());
+				 System.exit(0);
+			  }
+		   }
 		   
 		   //another course request?
-		   while(tryAgain == 1){
-			   System.out.print("Do you have another course request? Enter 1 for YES, 0 for NO: ");
+		   tryAgain = 1;
+		   while(tryAgain == 1 && submitRequest != false){
+			   System.out.print("\nDo you have another course request?\n-----Enter\n-----1 for YES\n-----0 for NO\n-----:");
 			   try {
 				 optionChoosen = Integer.parseInt(br.readLine());
 			   } catch (IOException ioe) {
@@ -453,6 +497,5 @@ class DataProject
 			   }
 		   }
 	   }
-   }
-   
+   }  
 }
