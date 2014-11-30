@@ -11,28 +11,28 @@ import java.text.SimpleDateFormat;
 class DataProject
 {
    ArrayList<String> courseNumbers;
-
-
-
-
-
+   Connection myConnection = null;
+   Statement myStatment =null;
+   PreparedStatement addUser;
+   PreparedStatement addStudentRequest;
+   PreparedStatement addTeacherRequest;
+   DriverManager myDriverManager;
 
    public static void main (String args[])  //throws SQLException
    
    {
       DataProject myDataProject=new DataProject();
       
-      try
-      {
-         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-      }   
-      catch (Exception e)
-      {
-         System.out.print(e.getStackTrace() +"\n");
-       
-      }
-      myDataProject.initalizeValues();
-      myDataProject.studentRequest(666982);
+
+
+       myDataProject.initalizeValues();
+      /*
+       if (myDataProject.validateCourseNumber("COT4461"))
+       {
+           System.out.println("Found \"COT4461\"\n");
+       }
+      */
+     // myDataProject.studentRequest(666982);
       //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
        
    }
@@ -46,7 +46,7 @@ class DataProject
       //String rawNumber=Integer.toString(number);
       for (i=0; i<(8-number.length()); i++)
       {
-         output+="0";
+         output+="0"; //
       }
       output+=rawNumber;
    }*/
@@ -56,16 +56,16 @@ class DataProject
         String password=Integer.toString(studentNumber);
       try
       {
-         Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
-
-         Statement mystatment=myconnection.createStatement();
+         myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+         myStatment=myConnection.createStatement();
          String input = new String("insert into USERS values ( "+studentNumber+", '"+userType+"', '"+password+"', '"+name+"', "+permission+")");
-         mystatment.executeQuery (input);   //read javadocs for ResultsSet
+         myStatment.executeQuery (input);   //read javadocs for ResultsSet
 
       }
 
       catch (Exception e)
       {
+          System.out.println("error inserting user");
          System.out.println(e.getMessage());
          System.out.println(e.getStackTrace().toString());
          System.exit(0);
@@ -77,20 +77,46 @@ class DataProject
    }
    void initalizeValues()
    {
+
+       ResultSet courseResult=null;
+       try
+       {
+           DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+       }
+       catch (Exception e)
+       {
+           System.out.print("Driver error"+ e.getStackTrace() +"\n");
+
+       }
       //initalizes courses ALL user inputed courses should be checked as valid via the testCourseInputMethod
       try
       {
-          ResultSet courseResult=makeQuery("select course_number from course");
-		  while (courseResult.next())
-		  {
-			 courseNumbers.add(courseResult.getString(1));
-		  }  
-		}
-		catch (Exception e)
-		{
-			 System.out.println(e.getMessage());
-			 System.out.println(e.getStackTrace().toString());
-		}
+          Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+          myStatment=myconnection.createStatement();
+          courseResult=myStatment.executeQuery("select * from COURSE");
+            /*if (courseResult.wasNull())
+                {System.out.println("Courseresult is null");}
+            //SQL exception: no data read
+            */
+          courseNumber=courseResult.getObject("COURSE_NUMBER", String);
+
+            /*while (courseResult.next())
+            {
+                String aCourse=courseResult.getString(1);
+                courseNumbers.add(aCourse);
+            }
+            courseResult.close();
+            */
+            System.out.println("Done loading courses");
+        }
+        catch (SQLException g)
+        {
+            System.out.println("SQLError in the result set:"+g.getCause()+"\n"+g.getMessage()+"\n"+g.getStackTrace());
+        }
+        catch (Exception f)
+        {
+            System.out.println("Error in the result set:"+f.getCause()+"\n"+f.getMessage()+"\n"+f.getStackTrace());
+        }
    }
    
    boolean validateCourseNumber(String userInputCourseNumber)
@@ -105,7 +131,7 @@ class DataProject
    
    
       //Todo make makeQuery blocks handel SQLException.
-   ResultSet makeQuery(String query)throws SQLException
+   /*ResultSet makeQuery(String query)throws SQLException
    {
       
    
@@ -121,13 +147,14 @@ class DataProject
 
 
    }
+    */
 
    void displayCourseRequest (String course)
    {
       try
       {
          String studentQuery=("Select * from student_request WHERE course_number = '"+course+"'");
-         ResultSet studentResults=makeQuery(studentQuery);
+         ResultSet studentResults=myStatment.executeQuery(studentQuery);
 
 		  while (studentResults.next())
 		  {
@@ -136,7 +163,7 @@ class DataProject
 			 System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/"+studentResults.getString(8)+"/");
 		  }
 		  String facultyQuery=("Select * from faculty_request WHERE course_number = '"+course+"'"); 
-		  ResultSet facultyResults=makeQuery(studentQuery);
+		  ResultSet facultyResults=myStatment.executeQuery(studentQuery);
 		  while (studentResults.next())
 		  {
 			 //String 2 is not used it is the course number
@@ -146,6 +173,7 @@ class DataProject
 	  }
 	  catch (Exception e)
 	  {
+          System.out.println("Error Reterving course requests");
 		 System.out.println(e.getMessage());
          System.out.println(e.getStackTrace().toString());
 	  }
