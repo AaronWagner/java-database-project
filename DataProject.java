@@ -15,12 +15,21 @@ class DataProject
    PreparedStatement addUser;
    PreparedStatement addStudentRequest;
    PreparedStatement addTeacherRequest;
-   DriverManager myDriverManager;
-
-   public static void main (String args[])  //throws SQLException
+   //DriverManager myDriverManager;
    
+   
+   public static void main (String args[])  //throws SQLException
    {
       DataProject myDataProject=new DataProject();
+      try
+      {
+         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+      }
+      catch (Exception e)
+      {
+         System.out.print(e.getStackTrace() +"\n");
+         
+      }
         /*
        try
        {
@@ -69,7 +78,7 @@ class DataProject
            System.out.println("Still didn't find it.");
        }
         */
-     // myDataProject.studentRequest(666982);
+      myDataProject.studentRequest(666982);
       //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
        
    }
@@ -298,6 +307,9 @@ class DataProject
 			   isCourse=validateCourseNumber(course_number);
 			   if(isCourse==false){
 				   System.out.println("Course number entered does not exist in database, please try again: ");
+			   }
+			   else{
+				   isCourse=true;
 			   }
 		   }
 		  
