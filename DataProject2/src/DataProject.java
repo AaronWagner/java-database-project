@@ -58,6 +58,7 @@ class DataProject
        //myDataProject.insertUser(12345678, "Mary Poppins", "Admin", 4);
        */
        myDataProject.initalizeValues();
+       myDataProject.displayCourseRequest("COT4461");
        /*
        //troubleshooting code to test validateCourseNumber
        if (myDataProject.validateCourseNumber("COT4461"))
@@ -116,7 +117,15 @@ class DataProject
    {
         courseNumbers=new ArrayList<String>();
        //ResultSet courseResult=null;
+       try
+       {
+           DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+       }
+       catch (Exception e)
+       {
+           System.out.print(e.getStackTrace() +"\n");
 
+       }
 
 
       //initalizes courses ALL user inputed courses should be checked as valid via the testCourseInputMethod
@@ -244,7 +253,7 @@ class DataProject
 		  while (studentResults.next())
 		  {
 			 //String 2 is not used it is the course number
-			 System.out.println(""); //Todo insert column lables here
+			 System.out.println("Student Requests for "+course+": \n"); //Todo insert column lables here
 			 System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/"+studentResults.getString(8)+"/");
 		  }
 		  String facultyQuery=("Select * from faculty_request WHERE course_number = '"+course+"'"); 
@@ -252,7 +261,7 @@ class DataProject
 		  while (studentResults.next())
 		  {
 			 //String 2 is not used it is the course number
-			 System.out.println(""); //Todo insert column lables here
+			 System.out.println("\"Faculty Requests for \"+course+\": \\n\""); //Todo insert column lables here
 			 System.out.println(facultyResults.getString(1)+"/"+facultyResults.getString(3)+"/"+facultyResults.getString(4)+"/"+facultyResults.getString(5)+"/"+facultyResults.getString(6)+"/"+facultyResults.getString(7)+"/"+facultyResults.getString(8)+"/");
 		  }
 	  }
