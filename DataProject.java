@@ -28,7 +28,6 @@ class DataProject
       catch (Exception e)
       {
          System.out.print(e.getStackTrace() +"\n");
-         
       }
         /*
        try
@@ -78,7 +77,8 @@ class DataProject
            System.out.println("Still didn't find it.");
        }
         */
-      myDataProject.studentRequest(666983);
+      //myDataProject.studentRequest(666983);
+      myDataProject.changePassword(666983);
       //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
        
    }
@@ -267,11 +267,66 @@ class DataProject
 	  }
 	  catch (Exception e)
 	  {
-          System.out.println("Error Reterving course requests");
+          System.out.println("Error retrieving course requests");
 		 System.out.println(e.getMessage());
          System.out.println(e.getStackTrace().toString());
 	  }
       //dispalyResults(studentResults);
+   }
+   
+   void changePassword(int idNumber){
+	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	   String password=null;
+	   int tryAgain=1;
+	   
+	   while(tryAgain==1){
+		   System.out.print("Enter old password: ");
+		   try {
+			 password = br.readLine();
+		   } catch (IOException ioe) {
+			 System.out.println("IO error trying to read your course number!");
+			 System.exit(1);
+		   }
+		   
+		  try
+		  {
+			 Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+			 Statement myStatment=myConnection.createStatement();
+			 String input = new String(" select password from users where id="+idNumber);
+			 ResultSet userResult = myStatment.executeQuery (input);   //read javadocs for ResultsSet
+			 userResult.next();
+			 String oldPassword=userResult.getString(1).trim();
+			 if(password.equals(oldPassword)){
+				 System.out.print("Enter new password: ");
+				 try {
+					 password = br.readLine();
+				 } catch (IOException ioe) {
+					 System.out.println("IO error trying to read your course number!");
+					 System.exit(1);
+				 }
+				 input = new String("UPDATE users SET password='"+password+"' WHERE id="+idNumber);
+				 myStatment.executeQuery (input);
+				 tryAgain=0;
+			 }
+			 else{
+				 System.out.print("Password did not match\nEnter:\n-----1 to try again\n-----0 to exit\n-----: ");
+				 try {
+					 tryAgain = Integer.parseInt(br.readLine());
+				 } catch (IOException ioe) {
+					 System.out.println("IO error trying to read your course number!");
+					 System.exit(1);
+				 }
+			 }
+		  }
+
+		  catch (Exception e)
+		  {
+			 System.out.println("error changing password");
+			 System.out.println(e.getMessage());
+			 System.out.println(e.getStackTrace().toString());
+			 System.exit(0);
+		  }
+	  }
    }
    
    void studentRequest (int studentNumber ){
