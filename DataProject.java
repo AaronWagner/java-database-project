@@ -28,7 +28,6 @@ class DataProject
       catch (Exception e)
       {
          System.out.print(e.getStackTrace() +"\n");
-         
       }
         /*
        try
@@ -67,10 +66,6 @@ class DataProject
        //myDataProject.insertUser(12345678, "Mary Poppins", "Admin", 4);
        */
        myDataProject.initalizeValues();
-       myDataProject.displayCourseRequest("COT3100");
-       myDataProject.displayDay("COT3100", "mw");
-       myDataProject.displayTime("COT3100", "morning");
-       System.out.println("Display request completed");
        /*
        //troubleshooting code to test validateCourseNumber
        if (myDataProject.validateCourseNumber("COT4461"))
@@ -82,7 +77,8 @@ class DataProject
            System.out.println("Still didn't find it.");
        }
         */
-      myDataProject.studentRequest(666983);
+      //myDataProject.studentRequest(666983);
+      myDataProject.changePassword(666983);
       //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
        
    }
@@ -129,15 +125,7 @@ class DataProject
    {
         courseNumbers=new ArrayList<String>();
        //ResultSet courseResult=null;
-       try
-       {
-           DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-       }
-       catch (Exception e)
-       {
-           System.out.print(e.getStackTrace() +"\n");
 
-       }
 
 
       //initalizes courses ALL user inputed courses should be checked as valid via the testCourseInputMethod
@@ -204,7 +192,7 @@ class DataProject
 
 
 
-   void displayDay (String requestedCourse, String week_day )
+   void displayfaculty (String requestedCourse, String week_day )
    {
        /*Day Listing - The same as course listing except the listing is based on the day and includes the following
         order of information: day, the course information, times with related student information, and times with related
@@ -213,36 +201,8 @@ class DataProject
        {
            Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
            Statement myStatment=myConnection.createStatement();
-           String studentQuery=("Select * from student_request WHERE course_number = '"+requestedCourse+" '");
+           String studentQuery=("Select * from student_request WHERE course_number = '"+requestedCourse+"'"+"and week_day ='"+week_day+"'");
            ResultSet studentResults=myStatment.executeQuery(studentQuery);
-           System.out.println("Student Requests for "+requestedCourse+" on "+week_day+": \n");
-           boolean isEmpty=true;
-           while (studentResults.next())
-           {
-               //String 2 is not used it is the course number
-               //Todo insert column lables here
-               System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(7)+"/");
-               isEmpty=false;
-           }
-           if (isEmpty)
-           {
-               System.out.println("There are no matching requests \n");
-           }
-           String facultyQuery=("Select * from faculty_request WHERE course_number = '"+requestedCourse+"'");
-           ResultSet facultyResults=myStatment.executeQuery(studentQuery);
-           System.out.println(" \nFaculty Requests for "+requestedCourse+" on "+week_day+": \n"); //Todo insert column lables here
-           isEmpty=true;
-           while (studentResults.next())
-           {
-               //String 2 is not used it is the course number
-
-               System.out.println(facultyResults.getString(1)+"/"+facultyResults.getString(3)+"/"+facultyResults.getString(4)+"/"+facultyResults.getString(5)+"/"+facultyResults.getString(7)+"/");
-               isEmpty=false;
-           }
-           if (isEmpty)
-           {
-               System.out.println("There are no matching requests \n");
-           }
        }
        catch (Exception e)
        {
@@ -251,53 +211,19 @@ class DataProject
            System.out.println(e.getStackTrace().toString());
        }
    }
+    void displayDay(String course, String day)
+    {
+        /*b. Day Listing - The same as course listing except the listing is based on the day and includes the following
+        order of information: day, the course information, times with related student information, and times with related
+        faculty information.
+         */
 
-    void displayTime(String course, String time)
+    }
+    void displayTime()
     {
         /*c. Time Listing - The same as course listing except the listing is based on the time and includes the following
         order of information: time, the course information, days with related student information, and days with related
         faculty information.  */
-        try
-        {
-            Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
-            Statement myStatment=myConnection.createStatement();
-            String studentQuery=("Select * from student_request WHERE course_number = '"+course+"'"+" and time_of_day ='"+time+"'");
-            ResultSet studentResults=myStatment.executeQuery(studentQuery);
-            System.out.println("Student Requests for "+course+"at time "+time+": \n");
-            boolean isEmpty=true;
-            while (studentResults.next())
-            {
-                //String 2 is not used it is the course number
-                //Todo insert column lables here
-                System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/");
-                isEmpty=false;
-            }
-            if (isEmpty)
-            {
-                System.out.println("There are no matching requests \n");
-            }
-            String facultyQuery=("Select * from faculty_request WHERE course_number = '"+course+"'"+" and time_of_day ='"+time+"'");
-            ResultSet facultyResults=myStatment.executeQuery(studentQuery);
-            System.out.println(" \nFaculty Requests for "+course+"at time "+time+": \n"); //Todo insert column lables here
-            isEmpty=true;
-            while (studentResults.next())
-            {
-                //String 2 is not used it is the course number
-
-                System.out.println(facultyResults.getString(1)+"/"+facultyResults.getString(3)+"/"+facultyResults.getString(4)+"/"+facultyResults.getString(5)+"/"+facultyResults.getString(6)+"/");
-                isEmpty=false;
-            }
-            if (isEmpty)
-            {
-                System.out.println("There are no matching requests \n");
-            }
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error Reterving course requests");
-            System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace().toString());
-        }
     }
     void displayStudent()
     {
@@ -321,63 +247,88 @@ class DataProject
       {
           Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
          Statement myStatment=myConnection.createStatement();
-         String studentQuery=("Select * from student_request WHERE course_number = '"+course+" '");
+         String studentQuery=("Select * from student_request WHERE course_number = '"+course+"'");
          ResultSet studentResults=myStatment.executeQuery(studentQuery);
-          System.out.println("Student Requests for "+course+": \n");
-		  boolean isEmpty=true;
-          while (studentResults.next())
+
+		  while (studentResults.next())
 		  {
 			 //String 2 is not used it is the course number
-			  //Todo insert column lables here
-			 System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/");
-                isEmpty=false;
-          }
-          if (isEmpty)
-          {
-              System.out.println("There are no matching requests \n");
-          }
+			 System.out.println(""); //Todo insert column lables here
+			 System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/"+studentResults.getString(8)+"/");
+		  }
 		  String facultyQuery=("Select * from faculty_request WHERE course_number = '"+course+"'"); 
 		  ResultSet facultyResults=myStatment.executeQuery(studentQuery);
-          System.out.println(" \nFaculty Requests for "+course+": \n"); //Todo insert column lables here
-          isEmpty=true;
-          while (studentResults.next())
+		  while (studentResults.next())
 		  {
 			 //String 2 is not used it is the course number
-
-			 System.out.println(facultyResults.getString(1)+"/"+facultyResults.getString(3)+"/"+facultyResults.getString(4)+"/"+facultyResults.getString(5)+"/"+facultyResults.getString(6)+"/"+facultyResults.getString(7)+"/");
-              isEmpty=false;
-          }
-          if (isEmpty)
-          {
-              System.out.println("There are no matching requests \n");
-          }
+			 System.out.println(""); //Todo insert column lables here
+			 System.out.println(facultyResults.getString(1)+"/"+facultyResults.getString(3)+"/"+facultyResults.getString(4)+"/"+facultyResults.getString(5)+"/"+facultyResults.getString(6)+"/"+facultyResults.getString(7)+"/"+facultyResults.getString(8)+"/");
+		  }
 	  }
 	  catch (Exception e)
 	  {
-          System.out.println("Error Reterving course requests");
+          System.out.println("Error retrieving course requests");
 		 System.out.println(e.getMessage());
          System.out.println(e.getStackTrace().toString());
 	  }
       //dispalyResults(studentResults);
    }
+   
+   void changePassword(int idNumber){
+	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	   String password=null;
+	   int tryAgain=1;
+	   
+	   while(tryAgain==1){
+		   System.out.print("Enter old password: ");
+		   try {
+			 password = br.readLine();
+		   } catch (IOException ioe) {
+			 System.out.println("IO error trying to read your course number!");
+			 System.exit(1);
+		   }
+		   
+		  try
+		  {
+			 Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+			 Statement myStatment=myConnection.createStatement();
+			 String input = new String(" select password from users where id="+idNumber);
+			 ResultSet userResult = myStatment.executeQuery (input);   //read javadocs for ResultsSet
+			 userResult.next();
+			 String oldPassword=userResult.getString(1).trim();
+			 if(password.equals(oldPassword)){
+				 System.out.print("Enter new password: ");
+				 try {
+					 password = br.readLine();
+				 } catch (IOException ioe) {
+					 System.out.println("IO error trying to read your course number!");
+					 System.exit(1);
+				 }
+				 input = new String("UPDATE users SET password='"+password+"' WHERE id="+idNumber);
+				 myStatment.executeQuery (input);
+				 tryAgain=0;
+			 }
+			 else{
+				 System.out.print("Password did not match\nEnter:\n-----1 to try again\n-----0 to exit\n-----: ");
+				 try {
+					 tryAgain = Integer.parseInt(br.readLine());
+				 } catch (IOException ioe) {
+					 System.out.println("IO error trying to read your course number!");
+					 System.exit(1);
+				 }
+			 }
+		  }
 
-   String setLength (String myInput, int length)
-    {
-        String output
-        if (myInput.length()>length)
-        {
-            output=myInput.substring(0, length);
-        }
-        else
-        {
-            output=new String(myInput);
-            for (int i=myInput.length(); i<length; i++)
-            {
-                output+=" ";
-            }
-        }
-    }
-
+		  catch (Exception e)
+		  {
+			 System.out.println("error changing password");
+			 System.out.println(e.getMessage());
+			 System.out.println(e.getStackTrace().toString());
+			 System.exit(0);
+		  }
+	  }
+   }
+   
    void studentRequest (int studentNumber ){
 	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	   int optionChoosen = -1;
@@ -562,7 +513,7 @@ class DataProject
 				 String input = new String("insert into STUDENT_REQUEST values ( "+studentNumber+", '"+
 											course_number+"', '"+request_date +"', '"+semester +"', "+
 											request_year +", '"+week_day  +"', '"+time_of_day  +"')");
-				 System.out.println("Request successfully submitted");
+				 System.out.println(input);
 				 myStatment.executeQuery (input);   //read javadocs for ResultsSet
 
 			  }
@@ -601,5 +552,6 @@ class DataProject
 			   }
 		   }
 	   }
-   }  
+   }
+   
 }
