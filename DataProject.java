@@ -11,8 +11,7 @@ import java.text.SimpleDateFormat;
 class DataProject
 {
    ArrayList<String> courseNumbers;
-   Connection myConnection = null;
-   Statement myStatment =null;
+
    PreparedStatement addUser;
    PreparedStatement addStudentRequest;
    PreparedStatement addTeacherRequest;
@@ -22,7 +21,7 @@ class DataProject
    
    {
       DataProject myDataProject=new DataProject();
-
+        /*
        try
        {
            Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
@@ -32,6 +31,7 @@ class DataProject
            boolean isNotEmpty=false;
            while (isNotEmpty=courseResult.next())
            {
+               System.out.println(courseResult.getString(1));
                if (!isNotEmpty)
                {
                    break;
@@ -41,7 +41,7 @@ class DataProject
            if (!isNotEmpty)
            {
                System.out.println("The results were empty.");
-               System.exit(0);
+               //System.exit(0);
            }
            System.out.println("Done loading courses");
        }
@@ -56,7 +56,8 @@ class DataProject
 
        //myDataProject.displayCourseRequest("COT4461");
        //myDataProject.insertUser(12345678, "Mary Poppins", "Admin", 4);
-       //myDataProject.initalizeValues();
+       */
+       myDataProject.initalizeValues();
       /*
        if (myDataProject.validateCourseNumber("COT4461"))
        {
@@ -87,8 +88,8 @@ class DataProject
         String password=Integer.toString(studentNumber);
       try
       {
-         myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
-         myStatment=myConnection.createStatement();
+         Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+         Statement myStatment=myConnection.createStatement();
          String input = new String("insert into USERS values ( "+studentNumber+", '"+userType+"', '"+password+"', '"+name+"', "+permission+")");
          myStatment.executeQuery (input);   //read javadocs for ResultsSet
 
@@ -111,53 +112,43 @@ class DataProject
 
        //ResultSet courseResult=null;
 
-        try
-       {
-           DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-       }
-       catch (Exception e)
-       {
-           System.out.print("Driver error"+ e.getStackTrace() +"\n");
 
-       }
 
       //initalizes courses ALL user inputed courses should be checked as valid via the testCourseInputMethod
-      try
-      {
-          myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
-          myStatment=myConnection.createStatement();
-          ResultSet courseResult=myStatment.executeQuery("select * from COURSE");
-            /*if (courseResult.wasNull())
-                {System.out.println("Courseresult is null");}
-            //SQL exception: no data read
+       try
+       {
+           Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+           Statement myStatment=myConnection.createStatement();
+           ResultSet courseResult=myStatment.executeQuery("select course_number from COURSE");
 
-            */
-          boolean isNotEmpty=false;
-          while (isNotEmpty=courseResult.next())
-            {
-                if (!isNotEmpty)
-                {
-                    break;
-                }
-                courseNumbers.add(courseResult.getString("course_number"));
-                //isNotEmpty=false;
-            }
-            //courseResult.close();
-            if (!isNotEmpty)
-            {
-                System.out.println("The results were empty.");
-                System.exit(0);
-            }
-          System.out.println("Done loading courses");
-        }
-        catch (SQLException g)
-        {
-            System.out.println("SQLError in the result set:"+g.getCause()+"\n"+g.getMessage()+"\n"+g.getStackTrace());
-        }
-        catch (Exception f)
-        {
-            System.out.println("Error in the result set:"+f.getCause()+"\n"+f.getMessage()+"\n"+f.getStackTrace());
-        }
+           boolean isNotEmpty=false;
+           boolean empty=true;
+           while (isNotEmpty=courseResult.next())
+           {
+
+               courseNumbers.add(courseResult.getString(1));
+               if (!isNotEmpty)
+               {
+                   break;
+               }
+                empty=false;
+           }
+           //courseResult.close();
+           if (empty)
+           {
+               System.out.println("The results were empty.");
+               //System.exit(0);
+           }
+           System.out.println("Done loading courses");
+       }
+       catch (SQLException g)
+       {
+           System.out.println("SQLError in the result set:"+g.getCause()+"\n"+g.getMessage()+"\n"+g.getStackTrace());
+       }
+       catch (Exception f)
+       {
+           System.out.println("Error in the result set:"+f.getCause()+"\n"+f.getMessage()+"\n"+f.getStackTrace());
+       }
    }
    
    boolean validateCourseNumber(String userInputCourseNumber)
@@ -194,8 +185,8 @@ class DataProject
    {
       try
       {
-          myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
-          myStatment=myConnection.createStatement();
+          Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+          Statement myStatment=myConnection.createStatement();
          String studentQuery=("Select * from student_request WHERE course_number = '"+course+"'");
          ResultSet studentResults=myStatment.executeQuery(studentQuery);
 
