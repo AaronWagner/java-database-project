@@ -22,9 +22,9 @@ class DataProject
    
    {
       DataProject myDataProject=new DataProject();
-      
 
-
+       myDataProject.displayCourseRequest("COT4461");
+       //myDataProject.insertUser(12345678, "Mary Poppins", "Admin", 4);
        myDataProject.initalizeValues();
       /*
        if (myDataProject.validateCourseNumber("COT4461"))
@@ -78,8 +78,9 @@ class DataProject
    void initalizeValues()
    {
 
-       ResultSet courseResult=null;
-       try
+       //ResultSet courseResult=null;
+
+        try
        {
            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
        }
@@ -88,26 +89,29 @@ class DataProject
            System.out.print("Driver error"+ e.getStackTrace() +"\n");
 
        }
+
       //initalizes courses ALL user inputed courses should be checked as valid via the testCourseInputMethod
       try
       {
-          Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
-          myStatment=myconnection.createStatement();
-          courseResult=myStatment.executeQuery("select * from COURSE");
+          myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+          myStatment=myConnection.createStatement();
+          ResultSet courseResult=myStatment.executeQuery("select * from COURSE");
             /*if (courseResult.wasNull())
                 {System.out.println("Courseresult is null");}
             //SQL exception: no data read
             */
-          courseNumber=courseResult.getObject("COURSE_NUMBER", String);
-
-            /*while (courseResult.next())
+          boolean isEmpty=true;
+          while (courseResult.next())
             {
-                String aCourse=courseResult.getString(1);
-                courseNumbers.add(aCourse);
+                courseNumbers.add(courseResult.getString("course_number"));
+                isEmpty=false;
             }
             courseResult.close();
-            */
-            System.out.println("Done loading courses");
+            if (isEmpty)
+            {
+                System.out.println("The results were empty.")
+            }
+          System.out.println("Done loading courses");
         }
         catch (SQLException g)
         {
@@ -153,6 +157,8 @@ class DataProject
    {
       try
       {
+          myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+          myStatment=myConnection.createStatement();
          String studentQuery=("Select * from student_request WHERE course_number = '"+course+"'");
          ResultSet studentResults=myStatment.executeQuery(studentQuery);
 
