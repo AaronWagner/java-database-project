@@ -58,7 +58,8 @@ class DataProject
        //myDataProject.insertUser(12345678, "Mary Poppins", "Admin", 4);
        */
        myDataProject.initalizeValues();
-
+       /*
+       //troubleshooting code to test validateCourseNumber
        if (myDataProject.validateCourseNumber("COT4461"))
        {
            System.out.println("Found \"COT4461\"\n");
@@ -67,7 +68,7 @@ class DataProject
        {
            System.out.println("Still didn't find it.");
        }
-
+        */
      // myDataProject.studentRequest(666982);
       //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
        
@@ -130,7 +131,7 @@ class DataProject
            while (isNotEmpty=courseResult.next())
            {
                String aCourse=courseResult.getString(1).trim();
-               System.out.println("Course added: /"+aCourse+"/ \n");
+               //System.out.println("Course added: /"+aCourse+"/ \n");
                courseNumbers.add(aCourse);
                if (!isNotEmpty)
                {
