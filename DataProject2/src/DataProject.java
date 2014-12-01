@@ -6,6 +6,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 //Please note for ResultSet.getString() the first colum is colum 1 not 0
 
 //hello world
@@ -722,7 +726,7 @@ class DataProject
         {
             Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
             Statement myStatment=myConnection.createStatement();
-            String myQuery=("select faculty_request.id, faculty_request.course_number, faculty_request.REQUEST_DATE, faculty_request.semester, faculty_request.request_year, faculty_request.week_day, faculty_request.time_of_day, users.user_name  from faculty_request left outer join student_request on  student_request.week_day=faculty_request.week_day and student_request.time_of_day=faculty_request.time_of_day and student_request.SEMESTER=faculty_request.SEMESTER and student_request.request_year=faculty_request.request_year left outer join users on users.id=student_request.id where  student_request.id="+facultyID+"");
+            String myQuery=("select faculty_request.id, faculty_request.course_number, faculty_request.REQUEST_DATE, faculty_request.semester, faculty_request.request_year, faculty_request.week_day, faculty_request.time_of_day, users.user_name, faculty_request.course_rank, faculty_request.week_day_rank, faculty_request.time_of_day_rank   from faculty_request left outer join student_request on  student_request.week_day=faculty_request.week_day and student_request.time_of_day=faculty_request.time_of_day and student_request.SEMESTER=faculty_request.SEMESTER and student_request.request_year=faculty_request.request_year left outer join users on users.id=student_request.id where  student_request.id="+facultyID+"");
 
 
             ResultSet studentResults=myStatment.executeQuery(myQuery);
@@ -732,13 +736,13 @@ class DataProject
             while (studentResults.next())
             {
                 matchingProf=studentResults.getString(8);
-                if (matchingProf.equals("null"))
+                if (matchingProf==null)
                 {
                     matchingProf="No Matching Students";
                 }
                 //String 2 is not used it is the course number
                 //Todo insert column lables here
-                System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/"+studentResults.getString(8)+"/");
+                System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/"+studentResults.getString(8)+"/"+studentResults.getString(9)+"/"+studentResults.getString(10)+"/"+studentResults.getString(11)+"/");
                 isEmpty=false;
             }
             if (isEmpty)
