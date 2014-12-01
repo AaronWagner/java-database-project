@@ -77,7 +77,7 @@ class DataProject
       // myDataProject.displayTime("COT3100", "morning");
        //myDataProject.displayStudent(666983);
        System.out.println("Display request completed");
-       myDataProject.changePassword(666983);
+       //myDataProject.changePassword(666983);
        myDataProject.pullReports();
        /*
        //troubleshooting code to test validateCourseNumber
@@ -339,7 +339,7 @@ class DataProject
                     for (int i = 0; i < studentNames.size(); i++) {
                         System.out.println(i + ". " + studentNames.get(i) + " " + studentNumbers.get(i) + "\t");
                     }
-                    System.out.println("Please enter the number preceding the student's name: Enter 0-" + studentNames.size() + "\n");
+                    System.out.println("Please enter the number preceding the student's name: Enter 0-" +(studentNames.size()-1) + "\n");
 
                     student = Integer.parseInt(studentNumbers.get(Integer.parseInt(br.readLine())));
                     tryagain=false;
@@ -560,6 +560,14 @@ class DataProject
                System.out.println("There are no matching requests \n");
            }
        }
+       catch (SQLException f)
+       {
+           System.out.println("SQL Error Reterving course requests");
+           System.out.println(f.getMessage());
+           System.out.println(f.getStackTrace());
+           System.out.println(f.getErrorCode());
+           System.out.println(f.getSQLState());
+       }
        catch (Exception e)
        {
            System.out.println("Error Retrieving course requests");
@@ -608,6 +616,14 @@ class DataProject
                 System.out.println("There are no matching requests \n");
             }
         }
+        catch (SQLException f)
+        {
+            System.out.println("SQL Error Reterving course requests");
+            System.out.println(f.getMessage());
+            System.out.println(f.getStackTrace());
+            System.out.println(f.getErrorCode());
+            System.out.println(f.getSQLState());
+        }
         catch (Exception e)
         {
             System.out.println("Error Reterving course requests");
@@ -634,7 +650,7 @@ class DataProject
             while (studentResults.next())
             {
                 matchingProf=studentResults.getString(8);
-                if (matchingProf.equals("null"))
+                if (matchingProf==null)
                 {
                     matchingProf="No Matching Professors";
                 }
@@ -644,10 +660,10 @@ class DataProject
                 String resultCourse=setLength(studentResults.getString(2),8);
                 String resultSemester=setLength(studentResults.getString(4),6);
                 String resultYear=setLength(studentResults.getString(5),6);
-                String resultDay=setLength(studentResults.getString(7),4);
-                String resultTime=setLength(studentResults.getString(8),9);
+                String resultDay=setLength(studentResults.getString(6),4);
+                String resultTime=setLength(studentResults.getString(7),9);
 
-                System.out.println(resultID+"/"+resultCourse+"/"+resultSemester+"/"+resultYear+"/"+resultDay+"/"+resultTime+"/");
+                System.out.println(resultID+"/"+resultCourse+"/"+resultSemester+"/"+resultYear+"/"+resultDay+"/"+resultTime+"/"+matchingProf+"/");
                 isEmpty=false;
             }
             if (isEmpty)
@@ -656,11 +672,20 @@ class DataProject
             }
 
         }
+        catch (SQLException f)
+        {
+            System.out.println("SQL Error Reterving course requests");
+            System.out.println(f.getMessage());
+            //System.out.println(f.prStackTrace());
+            System.out.println(f.getErrorCode());
+            System.out.println(f.getSQLState());
+        }
         catch (Exception e)
         {
             System.out.println("Error Reterving course requests");
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage()+"/"+e.toString()+"/"+e.getCause());
             System.out.println(e.getStackTrace().toString());
+            e.printStackTrace();
         }
 
     }
