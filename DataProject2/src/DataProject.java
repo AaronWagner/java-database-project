@@ -107,6 +107,7 @@ class DataProject
       output+=rawNumber;
    }*/
    
+   //returns true if string is integer
    boolean isInteger(String str) {
 		if (str == null) {
 			return false;
@@ -828,7 +829,12 @@ class DataProject
 						 System.out.print("Confirm that the password entered above is correct\n"+
 											"-----1 for YES\n-----0 for NO\n-----: ");
 						 try {
-							 isGood = Integer.parseInt(br.readLine());
+							 if(isInteger(br.readLine())){
+								 isGood = Integer.parseInt(br.readLine());
+							 }
+							 else{
+								 System.out.println("There was an error reading your input, try again.");
+							 }
 						 } catch (IOException ioe) {
 							 System.out.println("IO error trying to read your password!");
 							 System.exit(1);
