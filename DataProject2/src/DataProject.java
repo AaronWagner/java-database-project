@@ -301,9 +301,72 @@ class DataProject
         while (tryagain) {
 
             System.out.print("Please enter the student name or student number, or enter \"selection\" to select from a display of all student requests ");
+            try {
 
+
+                String userInput = br.readLine();
+                if (userInput.equalsIgnoreCase("selection")) {
+                    for (int i = 0; i < studentNames.size(); i++) {
+                        System.out.println(i + ". " + studentNames.get(i) + " " + studentNumbers.get(i) + "\t");
+                    }
+                    System.out.println("Please enter the number preceding the student's name: Enter 0-" + studentNames.size() + "\n");
+
+                    student = Integer.parseInt(studentNumbers.get(Integer.parseInt(br.readLine())));
+                } else {
+                    for (int i = 0; i < studentNames.size(); i++) {
+                        if (userInput.equals(studentNames.get(i)) || userInput.equals(studentNumbers.get(i))) {
+                            student = Integer.parseInt(studentNumbers.get(i));
+                            tryagain=false;
+                            break;
+
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Input error please try again \n");
+                tryagain = true;
+            }
         }
-        return student;
+            return student;
+
+    }
+    int selectFaculty()
+    {
+        int student=0;
+        String selectedTime="";
+        int selection=0;
+        boolean tryagain=true;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        while (tryagain) {
+
+            System.out.print("Please enter the faculty name or faculty number, or enter \"selection\" to select from a display of all student requests ");
+            try {
+
+
+                String userInput = br.readLine();
+                if (userInput.equalsIgnoreCase("selection")) {
+                    for (int i = 0; i < facultyNames.size(); i++) {
+                        System.out.println(i + ". " + facultyNames.get(i) + " " + facultyNumbers.get(i) + "\t");
+                    }
+                    System.out.println("Please enter the number preceding the faculty's name: Enter 0-" + studentNames.size() + "\n");
+
+                    student = Integer.parseInt(facultyNumbers.get(Integer.parseInt(br.readLine())));
+                } else {
+                    for (int i = 0; i < facultyNames.size(); i++) {
+                        if (userInput.equals(facultyNames.get(i)) || userInput.equals(facultyNumbers.get(i)))
+                        {
+                            student = Integer.parseInt(facultyNumbers.get(i));
+                            tryagain=false;
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Input error please try again \n");
+                tryagain = true;
+            }
+        }
+            return student;
 
     }
     String selectTime()
@@ -371,6 +434,7 @@ class DataProject
             } catch (Exception e)
             {
                 System.out.println("Input error please try again");
+                tryagain=true;
             }
         }
         switch (selection)
