@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Scanner;
 
 //Please note for ResultSet.getString() the first colum is colum 1 not 0
 
@@ -131,6 +132,14 @@ class DataProject
        
 
    }
+    public static boolean isInteger(String s, int radix) {
+        Scanner sc = new Scanner(s.trim());
+        if(!sc.hasNextInt(radix)) return false;
+        // we know it starts with a valid int, now make sure
+        // there's nothing left!
+        sc.nextInt(radix);
+        return !sc.hasNext();
+    }
    void initalizeValues()
    {
        courseNumbers=new ArrayList<String>();
@@ -417,6 +426,7 @@ class DataProject
             } catch (Exception e)
             {
                 System.out.println("Input error please try again");
+                tryagain=true;
             }
         }
         switch (selection)
@@ -636,6 +646,7 @@ class DataProject
                 String resultYear=setLength(studentResults.getString(5),6);
                 String resultDay=setLength(studentResults.getString(7),4);
                 String resultTime=setLength(studentResults.getString(8),9);
+
                 System.out.println(resultID+"/"+resultCourse+"/"+resultSemester+"/"+resultYear+"/"+resultDay+"/"+resultTime+"/");
                 isEmpty=false;
             }
