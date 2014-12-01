@@ -245,50 +245,49 @@ class DataProject
        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
        int selection=1;
        boolean tryagain=true;
-       while(tryagain) {
-           System.out.println("Greetings would you like to: \n\t 1. View requests for a course \n\t2. View requests for a course on a set of days\n\t3. View requests for a course at a time of day \n\t4. View a professor's requests \n\t5. View a student's requests\n\t6. Exit \nPlease enter 1-6");
-           try {
-               selection = Integer.parseInt(br.readLine());
-               if (0<selection&&selection<6)
-               {
-                   tryagain = false;
+       while (true) {
+           while (tryagain) {
+               System.out.println("Greetings would you like to: \n\t 1. View requests for a course \n\t2. View requests for a course on a set of days\n\t3. View requests for a course at a time of day \n\t4. View a professor's requests \n\t5. View a student's requests\n\t6. Exit \nPlease enter 1-6");
+               try {
+                   selection = Integer.parseInt(br.readLine());
+                   if (0 < selection && selection < 6) {
+                       tryagain = false;
+                   } else {
+                       System.out.println("Invalid input please try again \n");
+                   }
+               } catch (Exception e) {
+                   System.out.println("Input error please try again");
                }
-               else
-               {
-                   System.out.println("Invalid input please try again \n");
-               }
-           } catch (Exception e)
-           {
-               System.out.println("Input error please try again");
            }
-       }
-       String course;
-       switch (selection)
-       {
+           String course;
+           switch (selection) {
 
-           case 1:
-               course=selectCourse();
-               displayCourseRequest(course);
-               break;
-           case 2:
-               course=selectCourse();
-               String days=selectDays();
-               displayDay(course, days);
-               break;
-           case 3:
-               course=selectCourse();
-               String time=selectTime();
-               displayTime(course,time);
-               break;
-           case 4:
-               int student=selectStudent();
-
-               break;
-           case 5:
-               break;
-           case 6:
-               System.exit(1);
-               break;
+               case 1:
+                   course = selectCourse();
+                   displayCourseRequest(course);
+                   break;
+               case 2:
+                   course = selectCourse();
+                   String days = selectDays();
+                   displayDay(course, days);
+                   break;
+               case 3:
+                   course = selectCourse();
+                   String time = selectTime();
+                   displayTime(course, time);
+                   break;
+               case 4:
+                   int student = selectStudent();
+                   displayStudent(student);
+                   break;
+               case 5:
+                   int faculty = selectFaculty();
+                   displayFaculty(faculty);
+                   break;
+               case 6:
+                   System.exit(1);
+                   break;
+           }
        }
    }
     int selectStudent()
