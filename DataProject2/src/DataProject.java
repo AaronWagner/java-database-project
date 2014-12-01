@@ -70,6 +70,7 @@ class DataProject
        myDataProject.displayCourseRequest("COT3100");
        myDataProject.displayDay("COT3100", "mw");
        myDataProject.displayTime("COT3100", "morning");
+       myDataProject.displayStudent(666983);
        System.out.println("Display request completed");
        /*
        //troubleshooting code to test validateCourseNumber
@@ -246,7 +247,7 @@ class DataProject
        }
        catch (Exception e)
        {
-           System.out.println("Error Reterving course requests");
+           System.out.println("Error Retrieving course requests");
            System.out.println(e.getMessage());
            System.out.println(e.getStackTrace().toString());
        }
@@ -299,16 +300,88 @@ class DataProject
             System.out.println(e.getStackTrace().toString());
         }
     }
-    void displayStudent()
+    void displayStudent(int studentID)
     {
         /*d. Student Listing - The listing includes the information entered by the students on the form from area 1
         including all student courses and matches the list with any courses, days, times in the faculty information.
         */
+        try
+        {
+            Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+            Statement myStatment=myConnection.createStatement();
+            String myQuery=("select student_request.id, student_request.course_number, student_request.REQUEST_DATE, student_request.semester, student_request.request_year, student_request.week_day, student_request.time_of_day, users.user_name  from student_request left outer join faculty_request on  student_request.week_day=faculty_request.week_day and student_request.time_of_day=faculty_request.time_of_day and student_request.SEMESTER=faculty_request.SEMESTER and student_request.request_year=faculty_request.request_year left outer join users on users.id=faculty_request.id where  student_request.id="+studentID+"");
+
+
+            ResultSet studentResults=myStatment.executeQuery(myQuery);
+            System.out.println("Requests with matching professors for student # n"+studentID+" \n");
+            boolean isEmpty=true;
+            String matchingProf;
+            while (studentResults.next())
+            {
+                matchingProf=studentResults.getString(8));
+                if (matchingProf.equals("null"))
+                {
+                    matchingProf="No Matching Professors";
+                }
+                //String 2 is not used it is the course number
+                //Todo insert column lables here
+                System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/"+studentResults.getString(8)+"/");
+                isEmpty=false;
+            }
+            if (isEmpty)
+            {
+                System.out.println("There are no matches requests \n");
+            }
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error Reterving course requests");
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace().toString());
+        }
+
     }
-    void displayFaculty()
+    void displayFaculty(int facultyID)
     {
         /*e. Faculty Listing - The listing includes the information entered by the faculty on the form from area 3 including
         all student courses and matches the list with any courses, days, times in the student information. */
+        try
+        {
+            Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+            Statement myStatment=myConnection.createStatement();
+            String myQuery=("select faculty_request.id, faculty_request.course_number, faculty_request.REQUEST_DATE, faculty_request.semester, faculty_request.request_year, faculty_request.week_day, faculty_request.time_of_day, users.user_name  from faculty_request left outer join student_request on  student_request.week_day=faculty_request.week_day and student_request.time_of_day=faculty_request.time_of_day and student_request.SEMESTER=faculty_request.SEMESTER and student_request.request_year=faculty_request.request_year left outer join users on users.id=student_request.id where  student_request.id="+facultyID+"");
+
+
+            ResultSet studentResults=myStatment.executeQuery(myQuery);
+            System.out.println("Requests with matching students for professor # n"+studentID+" \n");
+            boolean isEmpty=true;
+            String matchingProf;
+            while (studentResults.next())
+            {
+                matchingProf=studentResults.getString(8));
+                if (matchingProf.equals("null"))
+                {
+                    matchingProf="No Matching Students";
+                }
+                //String 2 is not used it is the course number
+                //Todo insert column lables here
+                System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/"+studentResults.getString(8)+"/");
+                isEmpty=false;
+            }
+            if (isEmpty)
+            {
+                System.out.println("There are no matches requests \n");
+            }
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error Reterving course requests");
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace().toString());
+        }
+
     }
    void displayCourseRequest (String course)
    {
@@ -363,7 +436,7 @@ class DataProject
 
    String setLength (String myInput, int length)
     {
-        String output
+        String output;
         if (myInput.length()>length)
         {
             output=myInput.substring(0, length);
@@ -376,6 +449,7 @@ class DataProject
                 output+=" ";
             }
         }
+        return output;
     }
 
    void studentRequest (int studentNumber ){
