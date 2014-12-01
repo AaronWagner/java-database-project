@@ -107,6 +107,31 @@ class DataProject
       }
       output+=rawNumber;
    }*/
+   
+   //returns true if string is integer
+   boolean isInteger(String str) {
+		if (str == null) {
+			return false;
+		}
+		int length = str.length();
+		if (length == 0) {
+			return false;
+		}
+		int i = 0;
+		if (str.charAt(0) == '-') {
+			if (length == 1) {
+				return false;
+			}
+			i = 1;
+		}
+		for (; i < length; i++) {
+			char c = str.charAt(i);
+			if (c <= '/' || c >= ':') {
+				return false;
+			}
+		}
+		return true;
+	}
 
    void insertUser(int studentNumber, String name, String userType, int permission)
    {
@@ -840,7 +865,12 @@ class DataProject
 						 System.out.print("Confirm that the password entered above is correct\n"+
 											"-----1 for YES\n-----0 for NO\n-----: ");
 						 try {
-							 isGood = Integer.parseInt(br.readLine());
+							 if(isInteger(br.readLine())){
+								 isGood = Integer.parseInt(br.readLine());
+							 }
+							 else{
+								 System.out.println("There was an error reading your input, try again.");
+							 }
 						 } catch (IOException ioe) {
 							 System.out.println("IO error trying to read your password!");
 							 System.exit(1);
