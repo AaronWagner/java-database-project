@@ -11,6 +11,10 @@ import java.text.SimpleDateFormat;
 class DataProject
 {
    ArrayList<String> courseNumbers;
+    ArrayList<String> studentNumbers;
+    ArrayList<String> studentNames;
+    ArrayList<String> facultyNumbers;
+    ArrayList<String> facultyNames;
 
    PreparedStatement addUser;
    PreparedStatement addStudentRequest;
@@ -168,6 +172,39 @@ class DataProject
                //System.exit(0);
            }
            System.out.println("Done loading courses");
+           ResultSet studentResult=myStatment.executeQuery("select id, user_name, user_permission from users");
+
+           isNotEmpty=false;
+           empty=true;
+           String permission;
+           while (isNotEmpty=courseResult.next())
+           {
+               permission=studentResult.getString(3);
+               if (permission.equals("1"))
+               {
+                   studentNames.add(studentResult.getString(2));
+                   studentNumbers.add(studentResult.getString(1));
+               }
+               else if(permission.equals("2"))
+               {
+                   facultyNames.add(studentResult.getString(2));
+                   facultyNumbers.add(studentResult.getString(1));
+               }
+               //String aCourse=courseResult.getString(1).trim();
+               //System.out.println("Course added: /"+aCourse+"/ \n");
+               //courseNumbers.add(aCourse);
+               if (!isNotEmpty)
+               {
+                   break;
+               }
+               empty=false;
+           }
+           //courseResult.close();
+           if (empty)
+           {
+               System.out.println("The results were empty.");
+               //System.exit(0);
+           }
        }
        catch (SQLException g)
        {
@@ -202,8 +239,188 @@ class DataProject
          ResultSet output = mystatment.executeQuery ("select * from Course");   //read javadocs for ResultsSet
 		  return output;				
    }
+    //incomplete
+   void pullReports()
+   {
+       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+       int selection=1;
+       boolean tryagain=true;
+       while(tryagain) {
+           System.out.println("Greetings would you like to: \n\t 1. View requests for a course \n\t2. View requests for a course on a set of days\n\t3. View requests for a course at a time of day \n\t4. View a professor's requests \n\t5. View a student's requests\n\t6. Exit \nPlease enter 1-6");
+           try {
+               selection = Integer.parseInt(br.readLine());
+               if (0<selection&&selection<6)
+               {
+                   tryagain = false;
+               }
+               else
+               {
+                   System.out.println("Invalid input please try again \n");
+               }
+           } catch (Exception e)
+           {
+               System.out.println("Input error please try again");
+           }
+       }
+       String course;
+       switch (selection)
+       {
 
+           case 1:
+               course=selectCourse();
+               displayCourseRequest(course);
+               break;
+           case 2:
+               course=selectCourse();
+               String days=selectDays();
+               displayDay(course, days);
+               break;
+           case 3:
+               course=selectCourse();
+               String time=selectTime();
+               displayTime(course,time);
+               break;
+           case 4:
+               int student=selectStudent();
 
+               break;
+           case 5:
+               break;
+           case 6:
+               System.exit(1);
+               break;
+       }
+   }
+    int selectStudent()
+    {
+        int student=0;
+        String selectedTime="";
+        int selection=0;
+        boolean tryagain=true;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        while (tryagain) {
+
+            System.out.print("Please enter the student name or student number, or enter \"selection\" to select from a display of all student requests ");
+
+        }
+        return student;
+
+    }
+    String selectTime()
+    {
+        String selectedTime="";
+        int selection=0;
+        boolean tryagain=true;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        while (tryagain) {
+
+            System.out.println("Which time of days do you want\n\t 1. morning\n\t2. afternoon\n\t3. evening\nPlease enter 1-3\n");
+            try {
+                selection = Integer.parseInt(br.readLine());
+                if (0<selection&&selection<4)
+                {
+                    tryagain = false;
+                }
+                else
+                {
+                    System.out.println("Invalid input please try again \n");
+                    tryagain=true;
+                }
+                tryagain = false;
+            } catch (Exception e)
+            {
+                System.out.println("Input error please try again");
+            }
+        }
+        switch (selection)
+        {
+            case 1:
+                selectedTime="morning";
+                break;
+            case 2:
+                selectedTime="afternoon";
+                break;
+            case 3:
+                selectedTime="evening";
+                break;
+
+        }
+        return selectedTime;
+    }
+    String selectDays()
+    {
+        String selectedDay="";
+        int selection=0;
+        boolean tryagain=true;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        while (tryagain) {
+
+            System.out.println("Which combinations of days do you want\n\t 1. MW\n\t2. TR\n\t3. MTWR\n\t4. MWF\n\t5. TRF \n\t6. TR+F \n\t7. MW+F\nPlease enter 1-5\n");
+            try {
+                selection = Integer.parseInt(br.readLine());
+                if (0<selection&&selection<6)
+                {
+                    tryagain = false;
+                }
+                else
+                {
+                    System.out.println("Invalid input please try again \n");
+                    tryagain=true;
+                }
+                tryagain = false;
+            } catch (Exception e)
+            {
+                System.out.println("Input error please try again");
+            }
+        }
+        switch (selection)
+        {
+            case 1:
+                selectedDay="mw";
+                break;
+            case 2:
+                selectedDay="tr";
+                break;
+            case 3:
+                selectedDay="mtwr";
+                break;
+            case 4:
+                selectedDay="mwf";
+                break;
+            case 5:
+                selectedDay="trf";
+                break;
+            case 6:
+                selectedDay="tr+f";
+                break;
+            case 7:
+                selectedDay="mw+f";
+                break;
+        }
+        return selectedDay;
+    }
+    String selectCourse()
+    {
+        String selectedCourse="";
+        int selection;
+        boolean tryagain=true;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        while (tryagain) {
+            for (int i = 0; i < courseNumbers.size(); i++) {
+                System.out.print(i+". " + courseNumbers.get(i) + "   ");
+            }
+            System.out.println("\n Please enter 1-" + courseNumbers.size() + "to select your course.\n");
+            try {
+                selection = Integer.parseInt(br.readLine());
+                selectedCourse=courseNumbers.get(selection);
+                tryagain = false;
+            } catch (Exception e)
+            {
+                System.out.println("Input error please try again");
+            }
+        }
+        return selectedCourse;
+    }
 
    void displayDay (String requestedCourse, String week_day )
    {
@@ -318,7 +535,7 @@ class DataProject
             String matchingProf;
             while (studentResults.next())
             {
-                matchingProf=studentResults.getString(8));
+                matchingProf=studentResults.getString(8);
                 if (matchingProf.equals("null"))
                 {
                     matchingProf="No Matching Professors";
@@ -354,12 +571,12 @@ class DataProject
 
 
             ResultSet studentResults=myStatment.executeQuery(myQuery);
-            System.out.println("Requests with matching students for professor # n"+studentID+" \n");
+            System.out.println("Requests with matching students for professor # n"+facultyID+" \n");
             boolean isEmpty=true;
             String matchingProf;
             while (studentResults.next())
             {
-                matchingProf=studentResults.getString(8));
+                matchingProf=studentResults.getString(8);
                 if (matchingProf.equals("null"))
                 {
                     matchingProf="No Matching Students";
