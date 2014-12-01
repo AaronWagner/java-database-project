@@ -792,6 +792,7 @@ class DataProject
     void changePassword(int idNumber){
 	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	   String password=null;
+	   String comInput;
 	   int tryAgain=1;
 	   boolean isPasswordGood= false;
 	   int isGood=0;
@@ -822,15 +823,16 @@ class DataProject
 						 System.out.println("IO error trying to read your password!");
 						 System.exit(1);
 					 }
-					 if(password.length() <= 6){
+					 if(password.length() < 6){
 						System.out.println("Please choose a password at least six characters in length.");
 					 }
 					 else{
 						 System.out.print("Confirm that the password entered above is correct\n"+
 											"-----1 for YES\n-----0 for NO\n-----: ");
 						 try {
-							 if(isInteger(br.readLine())){
-								 isGood = Integer.parseInt(br.readLine());
+							 comInput=br.readLine(); 
+							 if(isInteger(comInput)){
+								 isGood = Integer.parseInt(comInput);
 							 }
 							 else{
 								 System.out.println("There was an error reading your input, try again.");
@@ -843,6 +845,12 @@ class DataProject
 							 isPasswordGood=true;
 							 System.out.println("Password sucessfully changed.");
 						 }
+						 else if(isGood==0){
+							 isPasswordGood=false;
+						 }
+						 else{
+							 System.out.println("There was an error reading your input, try again.");
+						 }
 					 }
 				 }
 				 input = new String("UPDATE users SET password='"+password+"' WHERE id="+idNumber);
@@ -851,9 +859,23 @@ class DataProject
 			 }
 			 else{
 				 System.out.println(oldPassword);
-				 System.out.print("Password did not match\nEnter:\n-----1 to try again\n-----0 to exit\n-----: ");
+				 System.out.print("\nPassword did not match\nEnter:\n-----1 to try again\n-----0 to exit\n-----: ");
 				 try {
-					 tryAgain = Integer.parseInt(br.readLine());
+					 comInput=br.readLine(); 
+					 if(isInteger(comInput)){
+						 if(Integer.parseInt(comInput) == 1){
+							 tryAgain = Integer.parseInt(comInput);
+						 }
+						 else if(Integer.parseInt(comInput) == 0){
+							 tryAgain = Integer.parseInt(comInput);
+						 }
+						 else{
+							 System.out.println("There was an error reading your input, try again.");
+						 }
+					 }
+					 else{
+						 System.out.println("There was an error reading your input, try again.");
+					 }
 				 } catch (IOException ioe) {
 					 System.out.println("IO error trying to read your course number!");
 					 System.exit(1);
