@@ -278,6 +278,7 @@ class DataProject
 	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	   String password=null;
 	   int tryAgain=1;
+	   boolean isPasswordGood= false;
 	   
 	   while(tryAgain==1){
 		   System.out.print("Enter old password: ");
@@ -287,7 +288,6 @@ class DataProject
 			 System.out.println("IO error trying to read your course number!");
 			 System.exit(1);
 		   }
-		   
 		  try
 		  {
 			 Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
@@ -297,15 +297,23 @@ class DataProject
 			 userResult.next();
 			 String oldPassword=userResult.getString(1).trim();
 			 if(password.equals(oldPassword)){
-				 System.out.print("Enter new password: ");
-				 try {
-					 password = br.readLine();
-				 } catch (IOException ioe) {
-					 System.out.println("IO error trying to read your course number!");
-					 System.exit(1);
+				 while(isPasswordGood==false){
+					 System.out.print("Enter new password: ");
+					 try {
+						 password = br.readLine();
+					 } catch (IOException ioe) {
+						 System.out.println("IO error trying to read your password!");
+						 System.exit(1);
+					 }
+					 if(password.length() <= 6){
+						System.out.println("Please choose a password at least six characters in length.");
+					 }
+					 else{
+						 isPasswordGood=true;
+					 }
 				 }
 				 input = new String("UPDATE users SET password='"+password+"' WHERE id="+idNumber);
-				 myStatment.executeQuery (input);
+				 myStatment.executeQuery (input); 
 				 tryAgain=0;
 			 }
 			 else{
@@ -327,6 +335,7 @@ class DataProject
 			 System.exit(0);
 		  }
 	  }
+	  System.out.println("Password sucessfully changed.");
    }
    
    void studentRequest (int studentNumber ){
