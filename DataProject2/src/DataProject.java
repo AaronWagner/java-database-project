@@ -1159,7 +1159,6 @@ class DataProject
                     String input = new String("insert into STUDENT_REQUEST values ( "+studentNumber+", '"+
                             course_number+"', '"+request_date +"', '"+semester +"', "+
                             request_year +", '"+week_day  +"', '"+time_of_day  +"')");
-                    System.out.println(input);
                     myStatment.executeQuery (input);   //read javadocs for ResultsSet
 
                 }
