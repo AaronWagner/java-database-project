@@ -266,7 +266,7 @@ class DataProject
                System.out.println("Greetings would you like to: \n\t1. View requests for a course \n\t2. View requests for a course on a set of days\n\t3. View requests for a course at a time of day \n\t4. View a professor's requests \n\t5. View a student's requests\n\t6. Exit \nPlease enter 1-6");
                try {
                    selection = Integer.parseInt(br.readLine());
-                   if (0 < selection && selection < 6) {
+                   if (0 < selection && selection <7) {
                        tryagain = false;
                    } else {
                        System.out.println("Invalid input please try again \n");
