@@ -76,7 +76,7 @@ class DataProject
       // myDataProject.displayTime("COT3100", "morning");
        //myDataProject.displayStudent(666983);
        System.out.println("Display request completed");
-       myDataProject.studentRequest(666983);
+       myDataProject.changePassword(666983);
        myDataProject.pullReports();
        /*
        //troubleshooting code to test validateCourseNumber
@@ -765,68 +765,81 @@ class DataProject
 
 
     void changePassword(int idNumber){
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String password=null;
-        int tryAgain=1;
-        boolean isPasswordGood= false;
+	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	   String password=null;
+	   int tryAgain=1;
+	   boolean isPasswordGood= false;
+	   int isGood=0;
+	   
+	   while(tryAgain==1){
+		   System.out.print("\nEnter old password: ");
+		   try {
+			 password = br.readLine();
+		   } catch (IOException ioe) {
+			 System.out.println("IO error trying to read your password!");
+			 System.exit(1);
+		   }
+		  try
+		  {
+			 Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
+			 Statement myStatment=myConnection.createStatement();
+			 String input = new String("select password from users where id="+idNumber);
+			 ResultSet userResult = myStatment.executeQuery (input);   //read javadocs for ResultsSet
+			 myConnection.setAutoCommit(true);
+			 userResult.next();
+			 String oldPassword=userResult.getString(1).trim();
+			 if(password.equals(oldPassword)){
+				 while(isPasswordGood==false){
+					 System.out.print("Enter new password: ");
+					 try {
+						 password = br.readLine();
+					 } catch (IOException ioe) {
+						 System.out.println("IO error trying to read your password!");
+						 System.exit(1);
+					 }
+					 if(password.length() <= 6){
+						System.out.println("Please choose a password at least six characters in length.");
+					 }
+					 else{
+						 System.out.print("Confirm that the password entered above is correct\n"+
+											"-----1 for YES\n-----0 for NO\n-----: ");
+						 try {
+							 isGood = Integer.parseInt(br.readLine());
+						 } catch (IOException ioe) {
+							 System.out.println("IO error trying to read your password!");
+							 System.exit(1);
+						 }
+						 if(isGood==1){
+							 isPasswordGood=true;
+							 System.out.println("Password sucessfully changed.");
+						 }
+					 }
+				 }
+				 input = new String("UPDATE users SET password='"+password+"' WHERE id="+idNumber);
+				 myStatment.executeQuery (input); 
+				 tryAgain=0;
+			 }
+			 else{
+				 System.out.println(oldPassword);
+				 System.out.print("Password did not match\nEnter:\n-----1 to try again\n-----0 to exit\n-----: ");
+				 try {
+					 tryAgain = Integer.parseInt(br.readLine());
+				 } catch (IOException ioe) {
+					 System.out.println("IO error trying to read your course number!");
+					 System.exit(1);
+				 }
+			 }
+		  }
 
-        while(tryAgain==1){
-            System.out.print("Enter old password: ");
-            try {
-                password = br.readLine();
-            } catch (IOException ioe) {
-                System.out.println("IO error trying to read your course number!");
-                System.exit(1);
-            }
-            try
-            {
-                Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
-                Statement myStatment=myConnection.createStatement();
-                String input = new String(" select password from users where id="+idNumber);
-                ResultSet userResult = myStatment.executeQuery (input);   //read javadocs for ResultsSet
-                userResult.next();
-                String oldPassword=userResult.getString(1).trim();
-                if(password.equals(oldPassword)){
-                    while(isPasswordGood==false){
-                        System.out.print("Enter new password: ");
-                        try {
-                            password = br.readLine();
-                        } catch (IOException ioe) {
-                            System.out.println("IO error trying to read your password!");
-                            System.exit(1);
-                        }
-                        if(password.length() <= 6){
-                            System.out.println("Please choose a password at least six characters in length.");
-                        }
-                        else{
-                            isPasswordGood=true;
-                        }
-                    }
-                    input = new String("UPDATE users SET password='"+password+"' WHERE id="+idNumber);
-                    myStatment.executeQuery (input);
-                    tryAgain=0;
-                }
-                else{
-                    System.out.print("Password did not match\nEnter:\n-----1 to try again\n-----0 to exit\n-----: ");
-                    try {
-                        tryAgain = Integer.parseInt(br.readLine());
-                    } catch (IOException ioe) {
-                        System.out.println("IO error trying to read your course number!");
-                        System.exit(1);
-                    }
-                }
-            }
-
-            catch (Exception e)
-            {
-                System.out.println("error changing password");
-                System.out.println(e.getMessage());
-                System.out.println(e.getStackTrace().toString());
-                System.exit(0);
-            }
-        }
-        System.out.println("Password sucessfully changed.");
-    }
+		  catch (Exception e)
+		  {
+			 System.out.println("error changing password");
+			 System.out.println(e.getMessage());
+			 System.out.println(e.getStackTrace().toString());
+			 System.exit(0);
+		  }
+	  }
+   }
 
     void studentRequest (int studentNumber ){
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
