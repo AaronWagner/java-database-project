@@ -71,11 +71,12 @@ class DataProject
        //myDataProject.insertUser(12345678, "Mary Poppins", "Admin", 4);
        */
        myDataProject.initalizeValues();
-       myDataProject.displayCourseRequest("COT3100");
-       myDataProject.displayDay("COT3100", "mw");
-       myDataProject.displayTime("COT3100", "morning");
-       myDataProject.displayStudent(666983);
+       //myDataProject.displayCourseRequest("COT3100");
+       //myDataProject.displayDay("COT3100", "mw");
+      // myDataProject.displayTime("COT3100", "morning");
+       //myDataProject.displayStudent(666983);
        System.out.println("Display request completed");
+       myDataProject.pullReports();
        /*
        //troubleshooting code to test validateCourseNumber
        if (myDataProject.validateCourseNumber("COT4461"))
@@ -132,7 +133,11 @@ class DataProject
    }
    void initalizeValues()
    {
-        courseNumbers=new ArrayList<String>();
+       courseNumbers=new ArrayList<String>();
+       studentNumbers=new ArrayList<String>();
+       studentNames=new ArrayList<String>();
+       facultyNumbers=new ArrayList<String>();
+       facultyNames=new ArrayList<String>();
        //ResultSet courseResult=null;
        try
        {
@@ -172,23 +177,33 @@ class DataProject
                //System.exit(0);
            }
            System.out.println("Done loading courses");
-           ResultSet studentResult=myStatment.executeQuery("select id, user_name, user_permission from users");
+           Statement myotherStatment=myConnection.createStatement();
+           ResultSet studentResult=myotherStatment.executeQuery("select id, user_name, user_permissions from users");
 
            isNotEmpty=false;
            empty=true;
            String permission;
-           while (isNotEmpty=courseResult.next())
+           while (isNotEmpty=studentResult.next())
            {
+               System.out.println("Got a user");
                permission=studentResult.getString(3);
                if (permission.equals("1"))
                {
-                   studentNames.add(studentResult.getString(2));
-                   studentNumbers.add(studentResult.getString(1));
+                   String studentName=studentResult.getString(2);
+                   String studentNumber=studentResult.getString(1);
+                   studentNames.add(studentName);
+                   studentNumbers.add(studentNumber);
+                   System.out.println("Student added "+studentName+" "+studentNumber+"\n");
+                   empty=false;
                }
                else if(permission.equals("2"))
                {
-                   facultyNames.add(studentResult.getString(2));
-                   facultyNumbers.add(studentResult.getString(1));
+                   String studentName=studentResult.getString(2);
+                   String studentNumber=studentResult.getString(1);
+                   facultyNames.add(studentName);
+                   facultyNumbers.add(studentNumber);
+                   System.out.println("Faculty added "+studentName+" "+studentNumber+"\n");
+                   empty=false;
                }
                //String aCourse=courseResult.getString(1).trim();
                //System.out.println("Course added: /"+aCourse+"/ \n");
@@ -202,13 +217,14 @@ class DataProject
            //courseResult.close();
            if (empty)
            {
-               System.out.println("The results were empty.");
+               System.out.println("User results were empty.");
                //System.exit(0);
            }
        }
        catch (SQLException g)
        {
            System.out.println("SQLError in the result set:"+g.getCause()+"\n"+g.getMessage()+"\n"+g.getStackTrace());
+           System.out.println(g.getErrorCode());
        }
        catch (Exception f)
        {
@@ -247,7 +263,7 @@ class DataProject
        boolean tryagain=true;
        while (true) {
            while (tryagain) {
-               System.out.println("Greetings would you like to: \n\t 1. View requests for a course \n\t2. View requests for a course on a set of days\n\t3. View requests for a course at a time of day \n\t4. View a professor's requests \n\t5. View a student's requests\n\t6. Exit \nPlease enter 1-6");
+               System.out.println("Greetings would you like to: \n\t1. View requests for a course \n\t2. View requests for a course on a set of days\n\t3. View requests for a course at a time of day \n\t4. View a professor's requests \n\t5. View a student's requests\n\t6. Exit \nPlease enter 1-6");
                try {
                    selection = Integer.parseInt(br.readLine());
                    if (0 < selection && selection < 6) {
@@ -265,24 +281,30 @@ class DataProject
                case 1:
                    course = selectCourse();
                    displayCourseRequest(course);
+                   tryagain=true;
                    break;
                case 2:
                    course = selectCourse();
                    String days = selectDays();
                    displayDay(course, days);
+                   tryagain=true;
                    break;
                case 3:
                    course = selectCourse();
                    String time = selectTime();
                    displayTime(course, time);
+                   tryagain=true;
                    break;
                case 4:
-                   int student = selectStudent();
-                   displayStudent(student);
-                   break;
-               case 5:
+
                    int faculty = selectFaculty();
                    displayFaculty(faculty);
+                   tryagain=true;
+                   break;
+               case 5:
+                   int student = selectStudent();
+                   displayStudent(student);
+                   tryagain=true;
                    break;
                case 6:
                    System.exit(1);
@@ -299,18 +321,20 @@ class DataProject
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while (tryagain) {
 
-            System.out.print("Please enter the student name or student number, or enter \"selection\" to select from a display of all student requests ");
+            System.out.print("Please enter the student name or student number, or enter \"select\" to select from a display of all student requests.\n ");
             try {
 
 
                 String userInput = br.readLine();
-                if (userInput.equalsIgnoreCase("selection")) {
+                if (userInput.equalsIgnoreCase("select")) {
                     for (int i = 0; i < studentNames.size(); i++) {
                         System.out.println(i + ". " + studentNames.get(i) + " " + studentNumbers.get(i) + "\t");
                     }
                     System.out.println("Please enter the number preceding the student's name: Enter 0-" + studentNames.size() + "\n");
 
                     student = Integer.parseInt(studentNumbers.get(Integer.parseInt(br.readLine())));
+                    tryagain=false;
+                    break;
                 } else {
                     for (int i = 0; i < studentNames.size(); i++) {
                         if (userInput.equals(studentNames.get(i)) || userInput.equals(studentNumbers.get(i))) {
@@ -323,6 +347,7 @@ class DataProject
                 }
             } catch (Exception e) {
                 System.out.println("Input error please try again \n");
+                System.out.println(e.getMessage());
                 tryagain = true;
             }
         }
@@ -472,7 +497,7 @@ class DataProject
             for (int i = 0; i < courseNumbers.size(); i++) {
                 System.out.print(i+". " + courseNumbers.get(i) + "   ");
             }
-            System.out.println("\n Please enter 1-" + courseNumbers.size() + "to select your course.\n");
+            System.out.println("\n Please enter 0-" +(courseNumbers.size()-1)+ "to select your course.\n");
             try {
                 selection = Integer.parseInt(br.readLine());
                 selectedCourse=courseNumbers.get(selection);
@@ -605,7 +630,13 @@ class DataProject
                 }
                 //String 2 is not used it is the course number
                 //Todo insert column lables here
-                System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/"+studentResults.getString(8)+"/");
+                String resultID=setLength(studentResults.getString(1),9);
+                String resultCourse=setLength(studentResults.getString(2),8);
+                String resultSemester=setLength(studentResults.getString(4),6);
+                String resultYear=setLength(studentResults.getString(5),6);
+                String resultDay=setLength(studentResults.getString(7),4);
+                String resultTime=setLength(studentResults.getString(8),9);
+                System.out.println(resultID+"/"+resultCourse+"/"+resultSemester+"/"+resultYear+"/"+resultDay+"/"+resultTime+"/");
                 isEmpty=false;
             }
             if (isEmpty)
