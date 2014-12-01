@@ -4,6 +4,11 @@ import java.io.*;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Scanner;
+
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 //Please note for ResultSet.getString() the first colum is colum 1 not 0
 
@@ -76,7 +81,7 @@ class DataProject
       // myDataProject.displayTime("COT3100", "morning");
        //myDataProject.displayStudent(666983);
        System.out.println("Display request completed");
-       myDataProject.changePassword(666983);
+       //myDataProject.changePassword(666983);
        myDataProject.pullReports();
        /*
        //troubleshooting code to test validateCourseNumber
@@ -156,6 +161,14 @@ class DataProject
        
 
    }
+    public static boolean isInteger(String s, int radix) {
+        Scanner sc = new Scanner(s.trim());
+        if(!sc.hasNextInt(radix)) return false;
+        // we know it starts with a valid int, now make sure
+        // there's nothing left!
+        sc.nextInt(radix);
+        return !sc.hasNext();
+    }
    void initalizeValues()
    {
        courseNumbers=new ArrayList<String>();
@@ -355,7 +368,7 @@ class DataProject
                     for (int i = 0; i < studentNames.size(); i++) {
                         System.out.println(i + ". " + studentNames.get(i) + " " + studentNumbers.get(i) + "\t");
                     }
-                    System.out.println("Please enter the number preceding the student's name: Enter 0-" + studentNames.size() + "\n");
+                    System.out.println("Please enter the number preceding the student's name: Enter 0-" +(studentNames.size()-1) + "\n");
 
                     student = Integer.parseInt(studentNumbers.get(Integer.parseInt(br.readLine())));
                     tryagain=false;
@@ -442,6 +455,7 @@ class DataProject
             } catch (Exception e)
             {
                 System.out.println("Input error please try again");
+                tryagain=true;
             }
         }
         switch (selection)
@@ -575,6 +589,14 @@ class DataProject
                System.out.println("There are no matching requests \n");
            }
        }
+       catch (SQLException f)
+       {
+           System.out.println("SQL Error Reterving course requests");
+           System.out.println(f.getMessage());
+           System.out.println(f.getStackTrace());
+           System.out.println(f.getErrorCode());
+           System.out.println(f.getSQLState());
+       }
        catch (Exception e)
        {
            System.out.println("Error Retrieving course requests");
@@ -623,6 +645,14 @@ class DataProject
                 System.out.println("There are no matching requests \n");
             }
         }
+        catch (SQLException f)
+        {
+            System.out.println("SQL Error Reterving course requests");
+            System.out.println(f.getMessage());
+            System.out.println(f.getStackTrace());
+            System.out.println(f.getErrorCode());
+            System.out.println(f.getSQLState());
+        }
         catch (Exception e)
         {
             System.out.println("Error Reterving course requests");
@@ -649,7 +679,7 @@ class DataProject
             while (studentResults.next())
             {
                 matchingProf=studentResults.getString(8);
-                if (matchingProf.equals("null"))
+                if (matchingProf==null)
                 {
                     matchingProf="No Matching Professors";
                 }
@@ -659,9 +689,10 @@ class DataProject
                 String resultCourse=setLength(studentResults.getString(2),8);
                 String resultSemester=setLength(studentResults.getString(4),6);
                 String resultYear=setLength(studentResults.getString(5),6);
-                String resultDay=setLength(studentResults.getString(7),4);
-                String resultTime=setLength(studentResults.getString(8),9);
-                System.out.println(resultID+"/"+resultCourse+"/"+resultSemester+"/"+resultYear+"/"+resultDay+"/"+resultTime+"/");
+                String resultDay=setLength(studentResults.getString(6),4);
+                String resultTime=setLength(studentResults.getString(7),9);
+
+                System.out.println(resultID+"/"+resultCourse+"/"+resultSemester+"/"+resultYear+"/"+resultDay+"/"+resultTime+"/"+matchingProf+"/");
                 isEmpty=false;
             }
             if (isEmpty)
@@ -670,11 +701,20 @@ class DataProject
             }
 
         }
+        catch (SQLException f)
+        {
+            System.out.println("SQL Error Reterving course requests");
+            System.out.println(f.getMessage());
+            //System.out.println(f.prStackTrace());
+            System.out.println(f.getErrorCode());
+            System.out.println(f.getSQLState());
+        }
         catch (Exception e)
         {
             System.out.println("Error Reterving course requests");
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage()+"/"+e.toString()+"/"+e.getCause());
             System.out.println(e.getStackTrace().toString());
+            e.printStackTrace();
         }
 
     }
@@ -686,7 +726,7 @@ class DataProject
         {
             Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
             Statement myStatment=myConnection.createStatement();
-            String myQuery=("select faculty_request.id, faculty_request.course_number, faculty_request.REQUEST_DATE, faculty_request.semester, faculty_request.request_year, faculty_request.week_day, faculty_request.time_of_day, users.user_name  from faculty_request left outer join student_request on  student_request.week_day=faculty_request.week_day and student_request.time_of_day=faculty_request.time_of_day and student_request.SEMESTER=faculty_request.SEMESTER and student_request.request_year=faculty_request.request_year left outer join users on users.id=student_request.id where  student_request.id="+facultyID+"");
+            String myQuery=("select faculty_request.id, faculty_request.course_number, faculty_request.REQUEST_DATE, faculty_request.semester, faculty_request.request_year, faculty_request.week_day, faculty_request.time_of_day, users.user_name, faculty_request.course_rank, faculty_request.week_day_rank, faculty_request.time_of_day_rank   from faculty_request left outer join student_request on  student_request.week_day=faculty_request.week_day and student_request.time_of_day=faculty_request.time_of_day and student_request.SEMESTER=faculty_request.SEMESTER and student_request.request_year=faculty_request.request_year left outer join users on users.id=student_request.id where  student_request.id="+facultyID+"");
 
 
             ResultSet studentResults=myStatment.executeQuery(myQuery);
@@ -696,13 +736,13 @@ class DataProject
             while (studentResults.next())
             {
                 matchingProf=studentResults.getString(8);
-                if (matchingProf.equals("null"))
+                if (matchingProf==null)
                 {
                     matchingProf="No Matching Students";
                 }
                 //String 2 is not used it is the course number
                 //Todo insert column lables here
-                System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/"+studentResults.getString(8)+"/");
+                System.out.println(studentResults.getString(1)+"/"+studentResults.getString(3)+"/"+studentResults.getString(4)+"/"+studentResults.getString(5)+"/"+studentResults.getString(6)+"/"+studentResults.getString(7)+"/"+studentResults.getString(8)+"/"+studentResults.getString(9)+"/"+studentResults.getString(10)+"/"+studentResults.getString(11)+"/");
                 isEmpty=false;
             }
             if (isEmpty)
