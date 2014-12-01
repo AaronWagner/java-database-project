@@ -76,6 +76,7 @@ class DataProject
       // myDataProject.displayTime("COT3100", "morning");
        //myDataProject.displayStudent(666983);
        System.out.println("Display request completed");
+       myDataProject.studentRequest(666983);
        myDataProject.pullReports();
        /*
        //troubleshooting code to test validateCourseNumber
@@ -88,7 +89,6 @@ class DataProject
            System.out.println("Still didn't find it.");
        }
         */
-      myDataProject.studentRequest(666983);
       //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
        
    }
