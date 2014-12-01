@@ -1212,6 +1212,7 @@ class DataProject
 	   int userFinished=0;
 	   boolean submitRequest=false;
 	   boolean isCourse=false;
+	   String comInput;
 	   
 	   String course_number = null;
 	   String request_date = null;
@@ -1256,7 +1257,13 @@ class DataProject
 		   while(tryAgain == 1){
 			   System.out.print("\nSelect a semester\nEnter 1 for Fall, 2 for Spring, or 3 for Summer: ");
 			   try {
-				 optionChoosen = Integer.parseInt(br.readLine());
+					comInput=br.readLine();
+					if(isInteger(comInput)){
+						optionChoosen = Integer.parseInt(comInput);
+					}
+					else{
+						optionChoosen=-1;
+					}
 			   } catch (IOException ioe) {
 				 System.out.println("IO error trying to read your semester!");
 				 System.exit(1);
@@ -1282,20 +1289,37 @@ class DataProject
 		   tryAgain = 1;
 		   
 		   //get request year
-		   System.out.print("\nEnter the year you wish to teach the requested course: ");
-		   try {
-			 request_year = Integer.parseInt(br.readLine());
-		   } catch (IOException ioe) {
-			 System.out.println("IO error trying to read your year!");
-			 System.exit(1);
-		   }
+		   while(tryAgain==1){
+				System.out.print("\nEnter the year you wish to teach the requested course: ");
+				try {
+					comInput=br.readLine();
+					if(isInteger(comInput)){
+						request_year = Integer.parseInt(comInput);
+						tryAgain = 0;
+					}
+					else{
+						System.out.println("------Incorrect input, please try again");
+						tryAgain = 1;
+					}
+				} catch (IOException ioe) {
+					System.out.println("IO error trying to read your course number!");
+					System.exit(1);
+				}
+			}
+			tryAgain = 1;
 		   
 		   //get weekday
 		   while(tryAgain == 1){
 			   System.out.print("\nSelect the days you would prefer to teach this course\n"
 						+"Enter 1 for MW, 2 for TR, 3 for MTWR, or 4 for TRF: ");
 			   try {
-				 optionChoosen = Integer.parseInt(br.readLine());
+					comInput=br.readLine();
+					if(isInteger(comInput)){
+						optionChoosen = Integer.parseInt(comInput);
+					}
+					else{
+						optionChoosen=-1;
+					}
 			   } catch (IOException ioe) {
 				 System.out.println("IO error trying to read your days!");
 				 System.exit(1);
@@ -1328,7 +1352,13 @@ class DataProject
 		   while(tryAgain == 1){
 			   System.out.print("\nSelect a time of day\nEnter 1 for morning, 2 for afternoon, or 3 for evening: ");
 			   try {
-				 optionChoosen = Integer.parseInt(br.readLine());
+					comInput=br.readLine();
+					if(isInteger(comInput)){
+						optionChoosen = Integer.parseInt(comInput);
+					}
+					else{
+						optionChoosen=-1;
+					}
 			   } catch (IOException ioe) {
 				 System.out.println("IO error trying to read your time of day!");
 				 System.exit(1);
