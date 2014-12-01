@@ -25,11 +25,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DataProject.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="DataProject.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DataProject2/src/DataProject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5506937" vertical-offset="3649" max-vertical-offset="16932">
+            <state vertical-scroll-proportion="-16.0" vertical-offset="3649" max-vertical-offset="16932">
               <caret line="241" column="16" selection-start-line="241" selection-start-column="16" selection-end-line="241" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DataProject.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/DataProject.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.50974023" vertical-offset="13673" max-vertical-offset="18105">
+              <caret line="832" column="3" selection-start-line="832" selection-start-column="3" selection-end-line="832" selection-end-column="3" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -57,13 +69,13 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/DataProject.java" />
         <option value="$PROJECT_DIR$/DataProject2/src/DataProject.java" />
+        <option value="$PROJECT_DIR$/DataProject.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="401" />
+    <option name="x" value="444" />
     <option name="width" value="1398" />
     <option name="height" value="1080" />
   </component>
@@ -321,7 +333,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="401" y="0" width="1398" height="1080" extended-state="0" />
+    <frame x="444" y="0" width="1398" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -414,8 +426,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DataProject2/src/DataProject.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5506937" vertical-offset="3649" max-vertical-offset="16932">
+        <state vertical-scroll-proportion="-16.0" vertical-offset="3649" max-vertical-offset="16932">
           <caret line="241" column="16" selection-start-line="241" selection-start-column="16" selection-end-line="241" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataProject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.50974023" vertical-offset="13673" max-vertical-offset="18105">
+          <caret line="832" column="3" selection-start-line="832" selection-start-column="3" selection-end-line="832" selection-end-column="3" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
