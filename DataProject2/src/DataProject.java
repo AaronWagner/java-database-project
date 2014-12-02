@@ -20,6 +20,9 @@ class DataProject
     ArrayList<String> studentNames;
     ArrayList<String> facultyNumbers;
     ArrayList<String> facultyNames;
+    ArrayList<String> userNumber;
+    ArrayList<String> passwords;
+    ArrayList<String> permissions;
 
    PreparedStatement addUser;
    PreparedStatement addStudentRequest;
@@ -176,7 +179,10 @@ class DataProject
        studentNames=new ArrayList<String>();
        facultyNumbers=new ArrayList<String>();
        facultyNames=new ArrayList<String>();
-       //ResultSet courseResult=null;
+       userNumber=new ArrayList<String>();
+       passwords=new ArrayList<String>();
+       permissions=new ArrayList<String>();
+       //ResultSet courseResult=null=new ArrayList<String>()
        try
        {
            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
@@ -216,22 +222,26 @@ class DataProject
            }
            System.out.println("Done loading courses");
            Statement myotherStatment=myConnection.createStatement();
-           ResultSet studentResult=myotherStatment.executeQuery("select id, user_name, user_permissions from users");
+           ResultSet studentResult=myotherStatment.executeQuery("select id, user_name, user_permissions, password from users");
 
            isNotEmpty=false;
            empty=true;
            String permission;
            while (isNotEmpty=studentResult.next())
            {
-               System.out.println("Got a user");
+               //System.out.println("Got a user");
                permission=studentResult.getString(3);
+               userNumber.add(studentResult.getString(1));
+               passwords.add(studentResult.getString(4));
+               permissions.add(studentResult.getString(3));
+
                if (permission.equals("1"))
                {
                    String studentName=studentResult.getString(2);
                    String studentNumber=studentResult.getString(1);
                    studentNames.add(studentName);
                    studentNumbers.add(studentNumber);
-                   System.out.println("Student added "+studentName+" "+studentNumber+"\n");
+                   //System.out.println("Student added "+studentName+" "+studentNumber+"\n");
                    empty=false;
                }
                else if(permission.equals("2"))
@@ -240,7 +250,7 @@ class DataProject
                    String studentNumber=studentResult.getString(1);
                    facultyNames.add(studentName);
                    facultyNumbers.add(studentNumber);
-                   System.out.println("Faculty added "+studentName+" "+studentNumber+"\n");
+                   //System.out.println("Faculty added "+studentName+" "+studentNumber+"\n");
                    empty=false;
                }
                //String aCourse=courseResult.getString(1).trim();
@@ -305,7 +315,7 @@ class DataProject
                try {
                    selection = Integer.parseInt(br.readLine());
                    if (0 < selection && selection <7) {
-                       tryagain = false;
+                       tryagain = true;
                    } else {
                        System.out.println("Invalid input please try again \n");
                    }
