@@ -745,7 +745,7 @@ class DataProject
                     for (int i = 0; i < facultyNames.size(); i++) {
                         System.out.println(i + ". " + facultyNames.get(i) + " " + facultyNumbers.get(i) + "\t");
                     }
-                    System.out.println("Please enter the number preceding the faculty's name: Enter 0-" + studentNames.size() + "\n");
+                    System.out.println("Please enter the number preceding the faculty's name: Enter 0-" + (facultyNames.size()-1) + "\n");
 
                     student = Integer.parseInt(facultyNumbers.get(Integer.parseInt(br.readLine())));
                     tryagain=false;
