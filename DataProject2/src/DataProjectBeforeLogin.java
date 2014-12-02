@@ -77,305 +77,29 @@ class DataProject
 
        //myDataProject.displayCourseRequest("COT4461");
        //myDataProject.insertUser(12345678, "Mary Poppins", "Admin", 4);
-      // */
+       */
        myDataProject.initalizeValues();
        //myDataProject.displayCourseRequest("COT3100");
        //myDataProject.displayDay("COT3100", "mw");
       // myDataProject.displayTime("COT3100", "morning");
        //myDataProject.displayStudent(666983);
-       //System.out.println("Display request completed");
-       //myDataProject.viewRequest(666983);
+       System.out.println("Display request completed");
+       myDataProject.facultyMenu(666983);
        //myDataProject.pullReports();
-      // /*
+       /*
        //troubleshooting code to test validateCourseNumber
-      // if (myDataProject.validateCourseNumber("COT4461"))
-      // {
-      //     System.out.println("Found \"COT4461\"\n");
-      // }
-      // else
-      // {
-      //     System.out.println("Still didn't find it.");
-      // }
-      //  */
+       if (myDataProject.validateCourseNumber("COT4461"))
+       {
+           System.out.println("Found \"COT4461\"\n");
+       }
+       else
+       {
+           System.out.println("Still didn't find it.");
+       }
+        */
       //myDataProject.insertUser( 15236, "Aaron Wagner", "Student", 1);
-
-      myDataProject.Login();       
+       
    }
-
-   //Login begins here
-   void Login()
-   {
-      Scanner input = new Scanner(System.in);
-      String inputID;
-      String inputPass;
-      boolean userFound = false;
-      boolean loginSuccess = false;
-      int u = 0;
-      String p = "easter egg";
-       
-      System.out.println("Welcome to the UNF School of Computing Course Management System:");
-      System.out.print("Please enter your UNF ID, e.g. '781354': ");
-         
-      inputID = input.nextLine();
-      
-      for(int i = 0; i < userNumber.size(); i++)
-      {
-         if(inputID.equals(userNumber.get(i)))
-         {
-            userFound = true;
-            u = i;
-         }
-      }  
-      while(userFound == false)
-      {
-         System.out.print("\nError: Invalid UNF ID, please re-enter your UNF ID: ");
-         inputID = input.nextLine();
-   
-         for(int i = 0; i < userNumber.size(); i++)
-         {
-            if(inputID.equals(userNumber.get(i)))
-            {
-               userFound = true;
-               u = i;
-            }   
-         }
-      
-      }
-                  
-             
-      System.out.print("Please enter your password: ");
-      inputPass = input.nextLine();
-      
-      if(inputPass.equals(passwords.get(u)))
-      {
-         loginSuccess = true;
-      }
-            
-      while(loginSuccess == false)
-      {    
-         System.out.print("\nError: Invalid password, please re-enter your password: ");
-         inputPass = input.nextLine();
-       
-         if(inputPass.equals(passwords.get(u)))
-         {
-                 loginSuccess = true;
-         }
-      }   
-            
-       //for(int i = 0; i < userNumber.size(); i++)
-       //{
-       //   System.out.println(userNumber.get(i));
-       //}      
-          
-      if(userFound == true && loginSuccess == true)
-      {
-         p = permissions.get(u);
-      }  
-      
-      if(p.equals("1"))
-      {
-         //CALL STUDENT FUNCTION HERE
-         //If you need to send the student function the user name used to log in, it's stored in String inputID
-         //The entered password is stored in String inputPass
-         studentMenu(Integer.parseInt(inputID));
-         
-      }
-       
-      if(p.equals("2"))
-      {
-         //CALL FACULTY FUNCTION HERE
-         //If you need to send the faculty function the user name used to log in, it's stored in String inputID
-         //The entered password is stored in String inputPass
-         facultyMenu(Integer.parseInt(inputID));
-      }
-         
-      if(p.equals("3"))
-      {
-         //CALL SECRETARY/VIEW FUNCTION HERE
-         //If you need to send the faculty function the user name used to log in, it's stored in String inputID 
-         //The entered password is stored in String inputPass
-         pullReports();
-      }
-          
-      if(p.equals("4"))
-      {     
-         AdminMenu();
-      }   
-         
-   }
-   
-   void AdminMenu()
-   {
-      String option;
-      Scanner input = new Scanner(System.in);
-      boolean validNum = false;
-      int newID = 0;
-      int newPerm = 0;
-         
-      System.out.println("\nAdministrator Menu");
-      System.out.print("Options: ");
-      System.out.println("1. Add User");
-      System.out.println("         2. Delete User");
-      System.out.println("         3. Change User Password");
-      System.out.println("         4. View Entries (Doesn't do anything yet, needs function call?)\n");
-      System.out.print("Please select option 1-4, or type 'exit' to quit: ");
-      
-      option = input.nextLine();
-         
-       
-      while(!option.equals("exit"))
-      {
-            
-         if(option.equals("1"))  
-         {
-            validNum = false;
-    
-            while(validNum == false)
-            {
-   
-            System.out.print("Please enter new user's 8-digit UNF ID: ");
-            String stringID = input.nextLine();
-      
-            try
-            {
-               validNum = true;
-               newID = Integer.parseInt(stringID);
-            } catch(NumberFormatException e)
-              {
-                 System.out.println("Invalid UNF ID.");
-                 validNum = false;
-              }
-              
-            if(stringID.length() > 8 && validNum == true)
-            {
-               System.out.print("\nError: Invalid UNF ID.");
-               //stringID = input.nextLine();
-               //newID = Integer.parseInt(stringID);
-               validNum = false;   
-            }
-            
-            }
-          
-            System.out.print("Please enter new user's account type, e.g. 'Student': ");
-            String newType = input.nextLine();
-            
-            while(!newType.equals("Student") && !newType.equals("Faculty") && !newType.equals("Admin"))
-            {
-               System.out.print("Invalid new user type, please try again: ");
-               newType = input.nextLine();
-      
-            }  
-             
-               
-            System.out.print("Please enter new user's name: ");
-            String newName = input.nextLine();
-               
-            System.out.print("Please enter new user's permissions level, e.g. '1': ");
-            String stringPerm = input.nextLine();
-               
-            while(!stringPerm.equals("1") && !stringPerm.equals("2") && !stringPerm.equals("3") && !stringPerm.equals("4"))
-            {
-               System.out.print("Invalid permission level, please try again: ");
-               stringPerm = input.nextLine();
-            }
-               
-            newPerm = Integer.parseInt(stringPerm);
-             
-            insertUser(newID, newName, newType, newPerm);
-           // DataProject.AdminMenu();
-            //System.out.println("Option 1 Selected.");
-            
-      }
-            
-         if(option.equals("2"))
-         {   
-            validNum = false;
-               
-            while(validNum == false)
-            {  
-             
-            System.out.print("Please enter user ID to be deleted: ");
-            String stringID = input.nextLine();
-            
-            try
-            {
-               validNum = true;
-               newID = Integer.parseInt(stringID);
-            } catch(NumberFormatException e)
-              {
-                 System.out.println("Invalid UNF ID.");
-                 validNum = false;
-              }
-               
-            if(stringID.length() > 8 && validNum == true)
-            {
-               System.out.print("\nError: Invalid UNF ID.");
-               //stringID = input.nextLine();
-               //newID = Integer.parseInt(stringID);   
-               validNum = false;
-            }
-            }
-         
-            deleteUser(newID);
-            //System.out.println("Option 2 Selected.");
-         }     
-         if(option.equals("3"))
-         {     
-            validNum = false;
-          
-            while(validNum == false)
-            {
-            
-            System.out.print("Please enter a user ID for password change: ");
-            String stringID = input.nextLine();
-          
-            try
-            {
-               validNum = true;
-               newID = Integer.parseInt(stringID);
-            } catch(NumberFormatException e)
-              {
-                 System.out.println("Invalid UNF ID.");
-                 validNum = false; 
-              }
-                 
-            if(stringID.length() > 8 && validNum == true)
-            {   
-               System.out.print("\nError: Invalid UNF ID.");
-               //stringID = input.nextLine();
-               //newID = Integer.parseInt(stringID);
-               validNum = false;
-            }
-            }
-           
-            /*System.out.print("Please enter a new password: ");
-            String updatedPass = input.nextLine();
-            
-            while(updatedPass.length() > 15)
-            {
-               System.out.println("Invalid password length, must be 15 characters or less, please try again: ");
-            }         */   
-
-            chngePassword(newID);
-            //System.out.println("Option 3 Selected.");
-         }
-         if(option.equals("4"))
-         {  
-            //System.out.println("Option 4 Selected.");
-            pullReports();
-         }   
-         if(!option.equals("1") && !option.equals("2") && !option.equals("3") && !option.equals("4"))
-         {
-            System.out.println("Invalid selection.");
-         }
-                 
-         option = input.nextLine();
-      }
-               
-   }
-   
-
-
 
    //this method gives leading zeros to a integer it takes in a string because
    //I intend to use Result.getString(columNumber) for all parameters
@@ -436,67 +160,11 @@ class DataProject
          System.exit(0);
       }
 
-      System.out.println("\nUser successfully added.\n");
 
-      AdminMenu();       
+       
 
    }
-   
-   void deleteUser(int studentNumber)
-   {
-     try
-     {
-         Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
-         Statement myStatment=myConnection.createStatement();
-         String input = new String("delete from USERS where ID=" +studentNumber);
-         myStatment.executeQuery (input);   //read javadocs for ResultsSet
 
-      }
-
-      catch (Exception e)
-      {
-          System.out.println("Error deleting user");
-         System.out.println(e.getMessage());
-         System.out.println(e.getStackTrace().toString());
-         System.exit(0);
-      }     
-      
-      System.out.println("\nUser successfully deleted.\n");  
-      AdminMenu();
-   }
-   
-   void changePassword(int studentNumber, String password)
-   {
-     try
-     {
-         Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
-         Statement myStatment=myConnection.createStatement();
-         String input = new String("update USERS set PASSWORD='" + password + "' where ID=" + studentNumber);
-         myStatment.executeQuery (input);   //read javadocs for ResultsSet
-
-      }
-
-      catch (Exception e)
-      {
-          System.out.println("Error updating password");
-         System.out.println(e.getMessage());
-         System.out.println(e.getStackTrace().toString());
-         System.exit(0);
-      }    
-      
-      System.out.println("\nPassword successfully updated.\n");
-      AdminMenu();
-             
-   }
-
-    public static boolean isInteger(String s, int radix) {
-        Scanner sc = new Scanner(s.trim());
-        if(!sc.hasNextInt(radix)) return false;
-        // we know it starts with a valid int, now make sure
-        // there's nothing left!
-        sc.nextInt(radix);
-        return !sc.hasNext();
-    }
    void initalizeValues()
    {
        courseNumbers=new ArrayList<String>();
@@ -545,7 +213,7 @@ class DataProject
                System.out.println("The results were empty.");
                //System.exit(0);
            }
-           //System.out.println("Done loading courses");
+           System.out.println("Done loading courses");
            Statement myotherStatment=myConnection.createStatement();
            ResultSet studentResult=myotherStatment.executeQuery("select id, user_name, user_permissions, password from users");
 
@@ -640,7 +308,7 @@ class DataProject
                try {
                    selection = Integer.parseInt(br.readLine());
                    if (0 < selection && selection <7) {
-                       tryagain = false;
+                       tryagain = true;
                    } else {
                        System.out.println("Invalid input please try again \n");
                    }
@@ -736,19 +404,18 @@ class DataProject
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while (tryagain) {
 
-            System.out.print("Please enter the faculty name or faculty number, or enter \"select\" to select from a display of all student requests ");
+            System.out.print("Please enter the faculty name or faculty number, or enter \"selection\" to select from a display of all student requests ");
             try {
 
 
                 String userInput = br.readLine();
-                if (userInput.equalsIgnoreCase("select")) {
+                if (userInput.equalsIgnoreCase("selection")) {
                     for (int i = 0; i < facultyNames.size(); i++) {
                         System.out.println(i + ". " + facultyNames.get(i) + " " + facultyNumbers.get(i) + "\t");
                     }
                     System.out.println("Please enter the number preceding the faculty's name: Enter 0-" + studentNames.size() + "\n");
 
                     student = Integer.parseInt(facultyNumbers.get(Integer.parseInt(br.readLine())));
-                    tryagain=false;
                 } else {
                     for (int i = 0; i < facultyNames.size(); i++) {
                         if (userInput.equals(facultyNames.get(i)) || userInput.equals(facultyNumbers.get(i)))
@@ -1165,7 +832,7 @@ class DataProject
     }
 
 
-    void chngePassword(int idNumber){
+    void changePassword(int idNumber){
 	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	   String password=null;
 	   String comInput;
@@ -1199,9 +866,9 @@ class DataProject
 						 System.out.println("IO error trying to read your password!");
 						 System.exit(1);
 					 }
-					 if(password.length() < 6 || password.length() > 15){
-						System.out.println("Please choose a password between six characters in length.");
-					}
+					 if(password.length() < 6){
+						System.out.println("Please choose a password at least six characters in length.");
+					 }
 					 else{
 						 System.out.print("Confirm that the password entered above is correct\n"+
 											"     1 for YES\n     0 for NO\n-----: ");
@@ -1293,7 +960,7 @@ class DataProject
             //get course number
             isCourse=false;
             while(isCourse==false){
-                System.out.print("Course number (IE. COT3100): ");
+                System.out.print("Course number (IE. COP2220): ");
                 try {
                     course_number = br.readLine();
                 } catch (IOException ioe) {
@@ -1316,7 +983,6 @@ class DataProject
             request_date = dateFormat.format(date);
 
             //get semester
-            tryAgain = 1;
             while(tryAgain == 1){
                 System.out.print("\nSelect a semester\nEnter 1 for Fall, 2 for Spring, or 3 for Summer: ");
                 try {
@@ -1595,7 +1261,6 @@ class DataProject
 		   request_date = dateFormat.format(date);
 		   
 		   //get semester
-		   tryAgain =1;
 		   while(tryAgain == 1){
 			   System.out.print("\nSelect a semester\nEnter 1 for Fall, 2 for Spring, or 3 for Summer: ");
 			   try {
@@ -2076,7 +1741,7 @@ class DataProject
 					tryAgain=0;
 				}
 				else if(optionChoosen==2){
-					chngePassword(studentNumber);
+					changePassword(studentNumber);
 					tryAgain=0;
 				}
 				else if(optionChoosen==3){
@@ -2156,7 +1821,7 @@ class DataProject
 					tryAgain=0;
 				}
 				else if(optionChoosen==2){
-					chngePassword(facultyNumber);
+					changePassword(facultyNumber);
 					tryAgain=0;
 				}
 				else if(optionChoosen==3){
