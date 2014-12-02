@@ -84,7 +84,7 @@ class DataProject
       // myDataProject.displayTime("COT3100", "morning");
        //myDataProject.displayStudent(666983);
        System.out.println("Display request completed");
-       myDataProject.studentMenu(666983);
+       myDataProject.facultyMenu(666983);
        //myDataProject.pullReports();
        /*
        //troubleshooting code to test validateCourseNumber
@@ -871,7 +871,7 @@ class DataProject
 					 }
 					 else{
 						 System.out.print("Confirm that the password entered above is correct\n"+
-											"     1 for YES\n     0 for NO\n     : ");
+											"     1 for YES\n     0 for NO\n-----: ");
 						 try {
 							 comInput=br.readLine(); 
 							 if(isInteger(comInput)){
@@ -902,7 +902,7 @@ class DataProject
 			 }
 			 else{
 				 System.out.println(oldPassword);
-				 System.out.print("\nPassword did not match\nEnter:\n     1 to try again\n     0 to exit\n     : ");
+				 System.out.print("\nPassword did not match\nEnter:\n     1 to try again\n     0 to exit\n-----: ");
 				 try {
 					 comInput=br.readLine(); 
 					 if(isInteger(comInput)){
@@ -1124,7 +1124,7 @@ class DataProject
             System.out.println("Time of the Day:  "+time_of_day);
             System.out.println("-----------------------------------");
             while(tryAgain == 1){
-                System.out.print("     Enter\n     1 for YES\n     0 for NO\n     2 to EXIT\n     :");
+                System.out.print("     Enter\n     1 for YES\n     0 for NO\n     2 to EXIT\n-----:");
                 try {
 					comInput=br.readLine();
 					if(isInteger(comInput)){
@@ -1180,7 +1180,7 @@ class DataProject
             //another course request?
             tryAgain = 1;
             while(tryAgain == 1 && submitRequest != false){
-                System.out.print("\nDo you have another course request?\n     Enter\n     1 for YES\n     0 for NO\n     :");
+                System.out.print("\nDo you have another course request?\n     Enter\n     1 for YES\n     0 for NO\n-----:");
                 try {
                     comInput=br.readLine();
 					if(isInteger(comInput)){
@@ -1487,7 +1487,7 @@ class DataProject
 		   System.out.println("Day Rank:         "+day_rank);
 		   System.out.println("-----------------------------------");
 		   while(tryAgain == 1){
-                System.out.print("     Enter\n     1 for YES\n     0 for NO\n     2 to EXIT\n     :");
+                System.out.print("     Enter\n     1 for YES\n     0 for NO\n     2 to EXIT\n-----:");
                 try {
 					comInput=br.readLine();
 					if(isInteger(comInput)){
@@ -1544,7 +1544,7 @@ class DataProject
 		   //another course request?
             tryAgain = 1;
             while(tryAgain == 1 && submitRequest != false){
-                System.out.print("\nDo you have another course request?\n     Enter\n     1 for YES\n     0 for NO\n     :");
+                System.out.print("\nDo you have another course request?\n     Enter\n     1 for YES\n     0 for NO\n-----:");
                 try {
                     comInput=br.readLine();
 					if(isInteger(comInput)){
@@ -1677,7 +1677,7 @@ class DataProject
 			//get more faculty request views?
 			tryAgain = 1;
 			while(tryAgain == 1){
-				System.out.print("\nDo you want to view other course requests?\n     Enter\n     1 for YES\n     0 for NO\n     :");
+				System.out.print("\nDo you want to view other course requests?\n     Enter\n     1 for YES\n     0 for NO\n-----:");
 				try {
 					comInput=br.readLine();
 					if(isInteger(comInput)){
@@ -1722,7 +1722,7 @@ class DataProject
 				System.out.println("1. Enter a Course Request");
 				System.out.println("2. Change Your Password");
 				System.out.println("3. Exit");
-				System.out.print("     : ");
+				System.out.print("-----: ");
 				try {
 					comInput=br.readLine();
 					if(isInteger(comInput)){
@@ -1756,7 +1756,91 @@ class DataProject
 			//Another task?
 			tryAgain = 1;
 			while(tryAgain == 1 && userFinished==0){
-				System.out.print("\nDo you want to complete another task?\n     Enter\n     1 for YES\n     0 for NO\n     :");
+				System.out.print("\nDo you want to complete another task?\n     Enter\n     1 for YES\n     0 for NO\n-----:");
+				try {
+					comInput=br.readLine();
+					if(isInteger(comInput)){
+						optionChoosen = Integer.parseInt(comInput);
+					}
+					else{
+						optionChoosen=-1;
+					}
+				} catch (IOException ioe) {
+					System.out.println("IO error trying to read your course number!");
+					System.exit(1);
+				}
+
+				if(optionChoosen==1){
+					userFinished=0;
+					tryAgain = 0;
+				}
+				else if(optionChoosen==0){
+					userFinished = 1;
+					tryAgain = 0;
+				}
+				else{
+					System.out.println("     Incorrect input, please try again");
+					tryAgain = 1;
+				}
+			}
+		}
+	}
+	
+	void facultyMenu(int facultyNumber){
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int tryAgain=1;
+		String comInput;
+		int optionChoosen=-1;
+		int userFinished=0;
+		
+		System.out.println("--------------Welcome--------------");
+		while(userFinished==0){
+			tryAgain = 1;
+			while(tryAgain == 1){
+				System.out.println("Choose one of the following options:");
+				System.out.println("1. Enter a Course Request");
+				System.out.println("2. Change Your Password");
+				System.out.println("3. View Past Request");
+				System.out.println("4. Exit");
+				System.out.print("-----: ");
+				try {
+					comInput=br.readLine();
+					if(isInteger(comInput)){
+						optionChoosen = Integer.parseInt(comInput);
+					}
+					else{
+						optionChoosen=-1;
+					}
+				} catch (IOException ioe) {
+					System.out.println("IO error trying to read your course number!");
+					System.exit(1);
+				}
+
+				if(optionChoosen==1){
+					facultyRequest(facultyNumber);
+					tryAgain=0;
+				}
+				else if(optionChoosen==2){
+					changePassword(facultyNumber);
+					tryAgain=0;
+				}
+				else if(optionChoosen==3){
+					viewRequest(facultyNumber);
+					tryAgain=0;
+				}
+				else if(optionChoosen==4){
+					tryAgain=0;
+					userFinished=1;
+				}
+				else{
+					System.out.println("     Incorrect input, please try again");
+					tryAgain = 1;
+				}
+			}
+			//Another task?
+			tryAgain = 1;
+			while(tryAgain == 1 && userFinished==0){
+				System.out.print("\nDo you want to complete another task?\n     Enter\n     1 for YES\n     0 for NO\n-----:");
 				try {
 					comInput=br.readLine();
 					if(isInteger(comInput)){
