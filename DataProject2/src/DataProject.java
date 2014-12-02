@@ -84,7 +84,7 @@ class DataProject
       // myDataProject.displayTime("COT3100", "morning");
        //myDataProject.displayStudent(666983);
        System.out.println("Display request completed");
-       myDataProject.facultyRequest(666983);
+       myDataProject.viewRequest(666983);
        //myDataProject.pullReports();
        /*
        //troubleshooting code to test validateCourseNumber
@@ -1586,88 +1586,131 @@ class DataProject
 		String semester=null;
 		int year=0;
 		String comInput;
-		int tryAgain=1;
+		int tryAgain;
 		int optionChoosen=-1;
 		boolean submitRequest=true;
+		int userFinished=0;
 		
-		System.out.println("View past course request.");
-		//get semester
-		while(tryAgain == 1){
-			System.out.print("\nSelect a semester\nEnter 1 for Fall, 2 for Spring, or 3 for Summer: ");
-			try {
-				comInput=br.readLine();
-				if(isInteger(comInput)){
-					optionChoosen = Integer.parseInt(comInput);
+		while(userFinished==0){
+			System.out.println("View past course requests.");
+			//get semester
+			tryAgain = 1;
+			while(tryAgain == 1){
+				System.out.print("\nSelect the semester of the course requests you would like to view\n"+
+				"Enter 1 for Fall, 2 for Spring, or 3 for Summer: ");
+				try {
+					comInput=br.readLine();
+					if(isInteger(comInput)){
+						optionChoosen = Integer.parseInt(comInput);
+					}
+					else{
+						optionChoosen=-1;
+					}
+				} catch (IOException ioe) {
+					System.out.println("IO error trying to read your course number!");
+					System.exit(1);
 				}
-				else{
-					optionChoosen=-1;
+
+				if(optionChoosen==1){
+					semester = "fall";
+					tryAgain = 0;
 				}
-			} catch (IOException ioe) {
-				System.out.println("IO error trying to read your course number!");
-				System.exit(1);
-			}
-
-			if(optionChoosen==1){
-				semester = "fall";
-				tryAgain = 0;
-			}
-			else if(optionChoosen==2){
-				semester = "spring";
-				tryAgain = 0;
-			}
-			else if(optionChoosen==3){
-				semester = "summer";
-				tryAgain = 0;
-			}
-			else{
-				System.out.println("------Incorrect input, please try again");
-				tryAgain = 1;
-			}
-		}
-		tryAgain = 1;
-
-		//get request year
-		while(tryAgain==1){
-			System.out.print("\nEnter the year you wish to take the requested course: ");
-			try {
-				comInput=br.readLine();
-				if(isInteger(comInput)){
-					year = Integer.parseInt(comInput);
+				else if(optionChoosen==2){
+					semester = "spring";
+					tryAgain = 0;
+				}
+				else if(optionChoosen==3){
+					semester = "summer";
 					tryAgain = 0;
 				}
 				else{
 					System.out.println("------Incorrect input, please try again");
 					tryAgain = 1;
 				}
-			} catch (IOException ioe) {
-				System.out.println("IO error trying to read your course number!");
-				System.exit(1);
 			}
-		}
-		tryAgain = 1;
-		
-		if(submitRequest == true){
-			try{
-				Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl",
-																"teama5dm2f14", "team5ghjptw");
-				Statement mystatment=myconnection.createStatement();
-				ResultSet output = mystatment.executeQuery ("select * from faculty_request where semester='"+
-				semester+"' and year="+year);    //read javadocs for ResultsSet
-				while (output.next()){
-					System.out.println(output.getString(1)+" "+output.getString(2)+
-					" "+output.getString(3)+" "+output.getString(4)+" "+output.getString(5)+
-					" "+output.getString(6)+" "+output.getString(7)+" "+output.getString(8)+
-					" "+output.getString(9)+"\n");
+			tryAgain = 1;
+
+			//get request year
+			while(tryAgain==1){
+				System.out.print("\nEnter the year of the course request you would like to view: ");
+				try {
+					comInput=br.readLine();
+					if(isInteger(comInput)){
+						year = Integer.parseInt(comInput);
+						tryAgain = 0;
+					}
+					else{
+						System.out.println("------Incorrect input, please try again");
+						tryAgain = 1;
+					}
+				} catch (IOException ioe) {
+					System.out.println("IO error trying to read your course number!");
+					System.exit(1);
+				}
+			}
+			tryAgain = 1;
+			
+			if(submitRequest == true){
+				try{
+					Connection myconnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl",
+																	"teama5dm2f14", "team5ghjptw");
+					Statement mystatment=myconnection.createStatement();
+					ResultSet output = mystatment.executeQuery ("select * from faculty_request where semester='"+
+					semester+"' and REQUEST_YEAR="+year);    //read javadocs for ResultsSet
+					while (output.next()){
+						System.out.println("\n-----------------------------------");
+						System.out.println("Faculty Number:   N0000"+output.getString(1));
+						System.out.println("Course Number:    "+output.getString(2));
+						System.out.println("Date Submitted:   "+output.getString(3));
+						System.out.println("Semester:         "+output.getString(4));
+						System.out.println("Request Year:     "+output.getString(5));
+						System.out.println("Days of the Week: "+output.getString(6));
+						System.out.println("Time of the Day:  "+output.getString(7));
+						System.out.println("Course Rank:      "+output.getString(8));
+						System.out.println("Time Rank:        "+output.getString(9));
+						System.out.println("Day Rank:         "+output.getString(10));
+						System.out.println("-----------------------------------");
+					}
+
+				}
+				catch (Exception e){
+					System.out.println("error inserting STUDENT_REQUEST");
+					System.out.println(e.getMessage());
+					System.out.println(e.getStackTrace().toString());
+					System.exit(0);
+				}
+			}
+			
+			//get more faculty request views?
+			tryAgain = 1;
+			while(tryAgain == 1){
+				System.out.print("\nDo you want to view other course requests?\n-----Enter\n-----1 for YES\n-----0 for NO\n-----:");
+				try {
+					comInput=br.readLine();
+					if(isInteger(comInput)){
+						optionChoosen = Integer.parseInt(comInput);
+					}
+					else{
+						optionChoosen=-1;
+					}
+				} catch (IOException ioe) {
+					System.out.println("IO error trying to read your course number!");
+					System.exit(1);
 				}
 
-			}
-			catch (Exception e){
-				System.out.println("error inserting STUDENT_REQUEST");
-				System.out.println(e.getMessage());
-				System.out.println(e.getStackTrace().toString());
-				System.exit(0);
+				if(optionChoosen==1){
+					userFinished=0;
+					tryAgain = 0;
+				}
+				else if(optionChoosen==0){
+					userFinished = 1;
+					tryAgain = 0;
+				}
+				else{
+					System.out.println("------Incorrect input, please try again");
+					tryAgain = 1;
+				}
 			}
 		}
-
 	}
 }
