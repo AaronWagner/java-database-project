@@ -413,6 +413,7 @@ class DataProject
                     System.out.println("Please enter the number preceding the faculty's name: Enter 0-" + studentNames.size() + "\n");
 
                     student = Integer.parseInt(facultyNumbers.get(Integer.parseInt(br.readLine())));
+                    tryagain=false;
                 } else {
                     for (int i = 0; i < facultyNames.size(); i++) {
                         if (userInput.equals(facultyNames.get(i)) || userInput.equals(facultyNumbers.get(i)))
