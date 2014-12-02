@@ -346,17 +346,9 @@ class DataProject
                //newID = Integer.parseInt(stringID);
                validNum = false;
             }
-            }
-           
-            System.out.print("Please enter a new password: ");
-            String updatedPass = input.nextLine();
-            
-            while(updatedPass.length() > 15)
-            {
-               System.out.println("Invalid password length, must be 15 characters or less, please try again: ");
-            }            
+            }           
 
-            changePassword(newID, updatedPass);
+            chngePassword(newID);
             //System.out.println("Option 3 Selected.");
          }
          if(option.equals("4"))
@@ -1163,7 +1155,7 @@ class DataProject
     }
 
 
-    void changePassword(int idNumber){
+    void chngePassword(int idNumber){
 	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	   String password=null;
 	   String comInput;
@@ -1197,8 +1189,8 @@ class DataProject
 						 System.out.println("IO error trying to read your password!");
 						 System.exit(1);
 					 }
-					 if(password.length() < 6){
-						System.out.println("Please choose a password at least six characters in length.");
+					 if(password.length() < 6 || password.length() > 15){
+						System.out.println("Please choose a password between six and fifteen characters in length.");
 					 }
 					 else{
 						 System.out.print("Confirm that the password entered above is correct\n"+
@@ -1314,6 +1306,7 @@ class DataProject
             request_date = dateFormat.format(date);
 
             //get semester
+            tryAgain == 1
             while(tryAgain == 1){
                 System.out.print("\nSelect a semester\nEnter 1 for Fall, 2 for Spring, or 3 for Summer: ");
                 try {
@@ -1592,6 +1585,7 @@ class DataProject
 		   request_date = dateFormat.format(date);
 		   
 		   //get semester
+		   tryAgain =1;
 		   while(tryAgain == 1){
 			   System.out.print("\nSelect a semester\nEnter 1 for Fall, 2 for Spring, or 3 for Summer: ");
 			   try {
@@ -2072,7 +2066,7 @@ class DataProject
 					tryAgain=0;
 				}
 				else if(optionChoosen==2){
-					changePassword(studentNumber);
+					chngePassword(studentNumber);
 					tryAgain=0;
 				}
 				else if(optionChoosen==3){
@@ -2152,7 +2146,7 @@ class DataProject
 					tryAgain=0;
 				}
 				else if(optionChoosen==2){
-					changePassword(facultyNumber);
+					chngePassword(facultyNumber);
 					tryAgain=0;
 				}
 				else if(optionChoosen==3){
