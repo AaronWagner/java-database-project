@@ -401,12 +401,12 @@ class DataProject
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while (tryagain) {
 
-            System.out.print("Please enter the faculty name or faculty number, or enter \"selection\" to select from a display of all student requests ");
+            System.out.print("Please enter the faculty name or faculty number, or enter \"select\" to select from a display of all student requests ");
             try {
 
 
                 String userInput = br.readLine();
-                if (userInput.equalsIgnoreCase("selection")) {
+                if (userInput.equalsIgnoreCase("select")) {
                     for (int i = 0; i < facultyNames.size(); i++) {
                         System.out.println(i + ". " + facultyNames.get(i) + " " + facultyNumbers.get(i) + "\t");
                     }
