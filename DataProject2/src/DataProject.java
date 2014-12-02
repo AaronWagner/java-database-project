@@ -640,7 +640,7 @@ class DataProject
                try {
                    selection = Integer.parseInt(br.readLine());
                    if (0 < selection && selection <7) {
-                       tryagain = true;
+                       tryagain = false;
                    } else {
                        System.out.println("Invalid input please try again \n");
                    }
