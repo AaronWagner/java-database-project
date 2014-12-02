@@ -1306,7 +1306,7 @@ class DataProject
             request_date = dateFormat.format(date);
 
             //get semester
-            tryAgain == 1
+            tryAgain = 1;
             while(tryAgain == 1){
                 System.out.print("\nSelect a semester\nEnter 1 for Fall, 2 for Spring, or 3 for Summer: ");
                 try {
