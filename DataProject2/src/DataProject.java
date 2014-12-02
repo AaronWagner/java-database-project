@@ -348,7 +348,7 @@ class DataProject
             }
             }           
 
-            chngePassword(newID);
+            chngePassword(Integer.parseInt(newID));
             //System.out.println("Option 3 Selected.");
          }
          if(option.equals("4"))
