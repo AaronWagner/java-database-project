@@ -1833,7 +1833,7 @@ class DataProject
 					userFinished=1;
 				}
 				else{
-					System.out.println("     Incorrect input, please try again");
+					System.out.println("\n     Incorrect input, please try again");
 					tryAgain = 1;
 				}
 			}
