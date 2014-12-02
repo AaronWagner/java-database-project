@@ -199,12 +199,12 @@ class DataProject
           
       if(p.equals("4"))
       {     
-         DataProject.AdminMenu();
+         AdminMenu();
       }   
          
    }
    
-   static void AdminMenu()
+   void AdminMenu()
    {
       String option;
       Scanner input = new Scanner(System.in);
@@ -346,14 +346,23 @@ class DataProject
                //newID = Integer.parseInt(stringID);
                validNum = false;
             }
-            }           
+            }
+           
+            /*System.out.print("Please enter a new password: ");
+            String updatedPass = input.nextLine();
+            
+            while(updatedPass.length() > 15)
+            {
+               System.out.println("Invalid password length, must be 15 characters or less, please try again: ");
+            }         */   
 
-            chngePassword(Integer.parseInt(newID));
+            chngePassword(newID);
             //System.out.println("Option 3 Selected.");
          }
          if(option.equals("4"))
          {  
-            System.out.println("Option 4 Selected.");
+            //System.out.println("Option 4 Selected.");
+            pullReports();
          }   
          if(!option.equals("1") && !option.equals("2") && !option.equals("3") && !option.equals("4"))
          {
@@ -407,7 +416,7 @@ class DataProject
 		return true;
 	}
 
-   static void insertUser(int studentNumber, String name, String userType, int permission)
+   void insertUser(int studentNumber, String name, String userType, int permission)
    {
         String password=Integer.toString(studentNumber);
       try
@@ -429,11 +438,11 @@ class DataProject
 
       System.out.println("\nUser successfully added.\n");
 
-      DataProject.AdminMenu();       
+      AdminMenu();       
 
    }
    
-   static void deleteUser(int studentNumber)
+   void deleteUser(int studentNumber)
    {
      try
      {
@@ -453,10 +462,10 @@ class DataProject
       }     
       
       System.out.println("\nUser successfully deleted.\n");  
-      DataProject.AdminMenu();
+      AdminMenu();
    }
    
-   static void changePassword(int studentNumber, String password)
+   void changePassword(int studentNumber, String password)
    {
      try
      {
@@ -476,7 +485,7 @@ class DataProject
       }    
       
       System.out.println("\nPassword successfully updated.\n");
-      DataProject.AdminMenu();
+      AdminMenu();
              
    }
 
@@ -1190,8 +1199,8 @@ class DataProject
 						 System.exit(1);
 					 }
 					 if(password.length() < 6 || password.length() > 15){
-						System.out.println("Please choose a password between six and fifteen characters in length.");
-					 }
+						System.out.println("Please choose a password between six characters in length.");
+					}
 					 else{
 						 System.out.print("Confirm that the password entered above is correct\n"+
 											"     1 for YES\n     0 for NO\n-----: ");
