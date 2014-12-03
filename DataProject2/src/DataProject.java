@@ -107,18 +107,20 @@ class DataProject
    {
       Scanner input = new Scanner(System.in);
       String inputID;
-      String inputPass;
+      String inputPass = "Initialized";
       boolean userFound = false;
       boolean loginSuccess = false;
       int u = 0;
       String p = "easter egg";
-       
+      String exitID;      
+ 
       System.out.println("\nWelcome to the UNF School of Computing Course Management System:");
       System.out.print("Please enter your UNF ID, e.g. '781354', or 'EXIT' to quit: ");
          
       inputID = input.nextLine();
-      
-      while(!inputID.equals("EXIT"))
+      exitID = inputID;
+
+      while(!exitID.equals("EXIT"))
       {
       
       for(int i = 0; i < userNumber.size(); i++)
@@ -133,7 +135,8 @@ class DataProject
       {
          System.out.print("\nError: Invalid UNF ID, please re-enter your UNF ID or 'EXIT' to quit: ");
          inputID = input.nextLine();
-   
+         exitID = inputID;
+
          for(int i = 0; i < userNumber.size(); i++)
          {
             if(inputID.equals(userNumber.get(i)))
@@ -146,15 +149,21 @@ class DataProject
       }
                   
              
-      while(!inputID.equals("EXIT"))
+      while(!exitID.equals("EXIT"))
       {
       
       System.out.print("Please enter your password or 'EXIT' to quit: ");
       inputPass = input.nextLine();
+
+      if(inputPass.equals("EXIT"))
+      {
+         exitID = "EXIT";
+      }   
       
       while(!inputPass.equals("EXIT"))
       {
       
+
       if(inputPass.equals(passwords.get(u)))
       {
          loginSuccess = true;
@@ -169,6 +178,12 @@ class DataProject
          {
                  loginSuccess = true;
          }
+       
+         if(inputPass.equals("EXIT"))
+         {
+            exitID = "EXIT";
+         }   
+
       }   
             
        //for(int i = 0; i < userNumber.size(); i++)
@@ -186,8 +201,10 @@ class DataProject
          //CALL STUDENT FUNCTION HERE
          //If you need to send the student function the user name used to log in, it's stored in String inputID
          //The entered password is stored in String inputPass
-         studentMenu(Integer.parseInt(inputID));
-         
+         //String tempID = inputID;
+         exitID = "EXIT";
+         //p = "Don't forget about me :(";
+         studentMenu(Integer.parseInt(inputID));    
       }
        
       if(p.equals("2"))
@@ -195,6 +212,9 @@ class DataProject
          //CALL FACULTY FUNCTION HERE
          //If you need to send the faculty function the user name used to log in, it's stored in String inputID
          //The entered password is stored in String inputPass
+         //String tempID = inputID;
+         exitID = "EXIT";
+         //p = "Don't forget about me :(";         
          facultyMenu(Integer.parseInt(inputID));
       }
          
@@ -203,11 +223,17 @@ class DataProject
          //CALL SECRETARY/VIEW FUNCTION HERE
          //If you need to send the faculty function the user name used to log in, it's stored in String inputID 
          //The entered password is stored in String inputPass
+         //String tempID = inputID;
+         exitID = "EXIT";
+         //p = "Don't forget about me :(";
          pullReports();
       }
           
       if(p.equals("4"))
       {     
+         //String tempID = inputID;
+         exitID = "EXIT";
+         //p = "Don't forget about me :(";         
          AdminMenu();
       } 
       
@@ -2213,6 +2239,7 @@ class DataProject
 					tryAgain=0;
 					exit=1;
 					userFinished=1;
+                                        System.exit(0);
 				}
 				else{
 					System.out.println("     Incorrect input, please try again");
@@ -2243,6 +2270,7 @@ class DataProject
 				else if(optionChoosen==0){
 					userFinished = 1;
 					tryAgain = 0;
+					System.exit(0);
 				}
 				else{
 					System.out.println("     Incorrect input, please try again");
@@ -2297,6 +2325,7 @@ class DataProject
 				else if(optionChoosen==4){
 					tryAgain=0;
 					userFinished=1;
+					System.exit(0);
 				}
 				else{
 					System.out.println("\n     Incorrect input, please try again");
@@ -2327,6 +2356,7 @@ class DataProject
 				else if(optionChoosen==0){
 					userFinished = 1;
 					tryAgain = 0;
+					System.exit(0);
 				}
 				else{
 					System.out.println("     Incorrect input, please try again");
