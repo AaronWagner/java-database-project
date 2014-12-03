@@ -2177,11 +2177,12 @@ class DataProject
 		String comInput;
 		int optionChoosen=-1;
 		int userFinished=0;
+		int exit = 0;
 		
 		System.out.println("--------------Welcome--------------");
 		while(userFinished==0){
 			tryAgain = 1;
-			while(tryAgain == 1){
+			while(tryAgain == 1 && exit ==0){
 				System.out.println("Choose one of the following options:");
 				System.out.println("1. Enter a Course Request");
 				System.out.println("2. Change Your Password");
@@ -2210,6 +2211,7 @@ class DataProject
 				}
 				else if(optionChoosen==3){
 					tryAgain=0;
+					exit=1;
 					userFinished=1;
 				}
 				else{
