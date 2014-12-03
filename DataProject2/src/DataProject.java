@@ -1209,7 +1209,7 @@ class DataProject
         {
             Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
             Statement myStatment=myConnection.createStatement();
-            String myQuery=("select faculty_request.id, faculty_request.course_number, faculty_request.REQUEST_DATE, faculty_request.semester, faculty_request.request_year, faculty_request.week_day, faculty_request.time_of_day, users.user_name, faculty_request.course_rank, faculty_request.week_day_rank, faculty_request.time_of_day_rank   from faculty_request left outer join student_request on  student_request.week_day=faculty_request.week_day and student_request.time_of_day=faculty_request.time_of_day and student_request.SEMESTER=faculty_request.SEMESTER and student_request.request_year=faculty_request.request_year left outer join users on users.id=student_request.id where  student_request.id="+facultyID+"");
+            String myQuery=("select faculty_request.id, faculty_request.course_number, faculty_request.REQUEST_DATE, faculty_request.semester, faculty_request.request_year, faculty_request.week_day, faculty_request.time_of_day, users.user_name, faculty_request.course_rank, faculty_request.week_day_rank, faculty_request.time_of_day_rank   from faculty_request left outer join student_request on  student_request.week_day=faculty_request.week_day and student_request.time_of_day=faculty_request.time_of_day and student_request.SEMESTER=faculty_request.SEMESTER and student_request.request_year=faculty_request.request_year left outer join users on users.id=student_request.id where  faculty_request.id="+facultyID+"");
 
 
             ResultSet studentResults=myStatment.executeQuery(myQuery);
