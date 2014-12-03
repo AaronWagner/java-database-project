@@ -113,10 +113,13 @@ class DataProject
       int u = 0;
       String p = "easter egg";
        
-      System.out.println("Welcome to the UNF School of Computing Course Management System:");
-      System.out.print("Please enter your UNF ID, e.g. '781354': ");
+      System.out.println("\nWelcome to the UNF School of Computing Course Management System:");
+      System.out.print("Please enter your UNF ID, e.g. '781354', or 'EXIT' to quit: ");
          
       inputID = input.nextLine();
+      
+      while(!inputID.equals("EXIT"))
+      {
       
       for(int i = 0; i < userNumber.size(); i++)
       {
@@ -126,9 +129,9 @@ class DataProject
             u = i;
          }
       }  
-      while(userFound == false)
+      while(userFound == false && !inputID.equals("EXIT"))
       {
-         System.out.print("\nError: Invalid UNF ID, please re-enter your UNF ID: ");
+         System.out.print("\nError: Invalid UNF ID, please re-enter your UNF ID or 'EXIT' to quit: ");
          inputID = input.nextLine();
    
          for(int i = 0; i < userNumber.size(); i++)
@@ -143,17 +146,23 @@ class DataProject
       }
                   
              
-      System.out.print("Please enter your password: ");
+      while(!inputID.equals("EXIT"))
+      {
+      
+      System.out.print("Please enter your password or 'EXIT' to quit: ");
       inputPass = input.nextLine();
+      
+      while(!inputPass.equals("EXIT"))
+      {
       
       if(inputPass.equals(passwords.get(u)))
       {
          loginSuccess = true;
       }
             
-      while(loginSuccess == false)
+      while(loginSuccess == false && !inputPass.equals("EXIT"))
       {    
-         System.out.print("\nError: Invalid password, please re-enter your password: ");
+         System.out.print("\nError: Invalid password, please re-enter your password or 'EXIT' to quit: ");
          inputPass = input.nextLine();
        
          if(inputPass.equals(passwords.get(u)))
@@ -200,7 +209,11 @@ class DataProject
       if(p.equals("4"))
       {     
          AdminMenu();
-      }   
+      } 
+      
+      }
+      }
+      }  
          
    }
    
@@ -217,15 +230,21 @@ class DataProject
       System.out.println("1. Add User");
       System.out.println("         2. Delete User");
       System.out.println("         3. Change User Password");
-      System.out.println("         4. View Entries (Doesn't do anything yet, needs function call?)\n");
-      System.out.print("Please select option 1-4, or type 'exit' to quit: ");
+      System.out.println("         4. View Entries\n");
+      System.out.print("Please select option 1-4, or enter 'EXIT' to quit: ");
       
       option = input.nextLine();
          
        
-      while(!option.equals("exit"))
+      while(!option.equals("EXIT"))
       {
             
+         if(!option.equals("1") && !option.equals("2") && !option.equals("3") && !option.equals("4"))
+         {
+            System.out.print("Error: Invalid selection, please select option 1-4 or enter 'EXIT' to quit: ");
+            option = input.nextLine();
+         }         
+         
          if(option.equals("1"))  
          {
             validNum = false;
@@ -233,22 +252,22 @@ class DataProject
             while(validNum == false)
             {
    
-            System.out.print("Please enter new user's 8-digit UNF ID: ");
+            System.out.print("\nPlease enter new user's UNF ID: ");
             String stringID = input.nextLine();
-      
+            
             try
             {
                validNum = true;
                newID = Integer.parseInt(stringID);
             } catch(NumberFormatException e)
               {
-                 System.out.println("Invalid UNF ID.");
+                 System.out.println("Error: Invalid UNF ID - Spaces and Characters are not allowed.");
                  validNum = false;
               }
               
             if(stringID.length() > 8 && validNum == true)
             {
-               System.out.print("\nError: Invalid UNF ID.");
+               System.out.print("\nError: Invalid UNF ID - Must not exceed 8 digits.");
                //stringID = input.nextLine();
                //newID = Integer.parseInt(stringID);
                validNum = false;   
@@ -256,32 +275,72 @@ class DataProject
             
             }
           
-            System.out.print("Please enter new user's account type, e.g. 'Student': ");
+            System.out.println("Please select one of the following account types: ");
+            System.out.println("- 'Student'");
+            System.out.println("- 'Faculty'");
+            System.out.println("- 'Secretary'");
+            System.out.println("- 'Admin'");
+            System.out.print("Please enter new user's account type: ");
             String newType = input.nextLine();
             
-            while(!newType.equals("Student") && !newType.equals("Faculty") && !newType.equals("Admin"))
+            while(!newType.equals("Student") && !newType.equals("Faculty") && !newType.equals("Admin") && !newType.equals("Secretary"))
             {
-               System.out.print("Invalid new user type, please try again: ");
+               System.out.print("Error: Invalid new user type, please try again: ");
                newType = input.nextLine();
-      
             }  
              
                
             System.out.print("Please enter new user's name: ");
             String newName = input.nextLine();
-               
-            System.out.print("Please enter new user's permissions level, e.g. '1': ");
-            String stringPerm = input.nextLine();
-               
+            
+            while(newName.length() == 0)
+            {
+               System.out.print("Error: Invalid name, please enter new user's name: ");
+               newName = input.nextLine();
+            }   
+            
+            //if(!newType.equals"Student")
+            //{
+               System.out.println("Please select one of the following permission levels: ");
+               System.out.println("1 - Student");
+               System.out.println("2 - Faculty");
+               System.out.println("3 - Secretary");
+               System.out.println("4 - Administrator");
+               System.out.print("Please select a permission level: ");
+               String stringPerm = input.nextLine();
+            //} 
+             
             while(!stringPerm.equals("1") && !stringPerm.equals("2") && !stringPerm.equals("3") && !stringPerm.equals("4"))
             {
-               System.out.print("Invalid permission level, please try again: ");
+               System.out.print("Error: Invalid permission level, please try again: ");
                stringPerm = input.nextLine();
             }
                
             newPerm = Integer.parseInt(stringPerm);
              
-            insertUser(newID, newName, newType, newPerm);
+            System.out.println("\nAre you sure you want to add a new user with the following selections?");
+            System.out.println("UNF ID: " + newID);
+            System.out.println("Account Type: " + newType);
+            System.out.println("Name: " + newName);
+            System.out.println("Permission Level: " +newPerm);
+            System.out.print("Enter 'Y' to confirm and 'N' to cancel: ");
+            String confirm = input.nextLine();
+            
+            while(!confirm.equals("Y") && !confirm.equals("N"))
+            {
+               System.out.print("Error: Invalid entry, please enter 'Y' to confirm or 'N' to cancel: ");
+               confirm = input.nextLine();
+            }
+            
+            if(confirm.equals("Y"))
+            {
+               insertUser(newID, newName, newType, newPerm);
+            }
+            
+            if(confirm.equals("N"))
+            {
+               AdminMenu();
+            }
            // DataProject.AdminMenu();
             //System.out.println("Option 1 Selected.");
             
@@ -290,12 +349,39 @@ class DataProject
          if(option.equals("2"))
          {   
             validNum = false;
+            boolean userFound = false;
                
             while(validNum == false)
-            {  
-             
-            System.out.print("Please enter user ID to be deleted: ");
+            {               
+            
+            System.out.print("\nPlease enter user ID to be deleted: ");
             String stringID = input.nextLine();
+            
+         for(int i = 0; i < userNumber.size(); i++)
+         {
+            if(stringID.equals(userNumber.get(i)))
+            {
+               userFound = true;
+               //u = i;
+            }
+         }  
+      
+         while(userFound == false)
+         {
+            System.out.print("\nError: Invalid user ID, please re-enter user ID for deletion: ");
+            stringID = input.nextLine();
+   
+            for(int i = 0; i < userNumber.size(); i++)
+            {
+               if(stringID.equals(userNumber.get(i)))
+               {
+               userFound = true;
+               //u = i;
+               }   
+            }
+      
+         }            
+            
             
             try
             {
@@ -303,20 +389,39 @@ class DataProject
                newID = Integer.parseInt(stringID);
             } catch(NumberFormatException e)
               {
-                 System.out.println("Invalid UNF ID.");
+                 System.out.println("Error: Invalid UNF ID - Numeric values only.");
                  validNum = false;
               }
                
             if(stringID.length() > 8 && validNum == true)
             {
-               System.out.print("\nError: Invalid UNF ID.");
+               System.out.print("\nError: Invalid UNF ID - Must not exceed length 8.");
                //stringID = input.nextLine();
                //newID = Integer.parseInt(stringID);   
                validNum = false;
             }
             }
          
-            deleteUser(newID);
+            System.out.println("\nAre you sure you want to DELETE user '" + newID + "'?");
+            System.out.print("Enter 'Y' to confirm user deletion and 'N' to cancel: ");
+            String confirm = input.nextLine();
+            
+            while(!confirm.equals("Y") && !confirm.equals("N"))
+            {
+               System.out.print("Error: Invalid entry, please enter 'Y' to confirm or 'N' to cancel: ");
+               confirm = input.nextLine();
+            }
+            
+            if(confirm.equals("Y"))
+            {
+               deleteUser(newID);
+            }
+            
+            if(confirm.equals("N"))
+            {
+               AdminMenu();
+            }            
+
             //System.out.println("Option 2 Selected.");
          }     
          if(option.equals("3"))
@@ -326,7 +431,7 @@ class DataProject
             while(validNum == false)
             {
             
-            System.out.print("Please enter a user ID for password change: ");
+            System.out.print("\nPlease enter a user ID for password change: ");
             String stringID = input.nextLine();
           
             try
@@ -348,28 +453,51 @@ class DataProject
             }
             }
            
-            /*System.out.print("Please enter a new password: ");
+            System.out.print("Please enter a new password of length 6-15 characters: ");
             String updatedPass = input.nextLine();
             
-            while(updatedPass.length() > 15)
+            while(updatedPass.length() > 15 || updatedPass.length() < 6)
             {
-               System.out.println("Invalid password length, must be 15 characters or less, please try again: ");
-            }         */   
+               System.out.println("Invalid password length, must be between 6 and 15 characters, please try again: ");
+            }           
 
-            chngePassword(newID);
+            System.out.println("\nAre you sure you want to change the password for user '" + newID + "' to '" + updatedPass + "'?");
+            System.out.print("Enter 'Y' to confirm password change, or 'N' to cancel: ");
+            String confirm = input.nextLine();
+            
+            while(!confirm.equals("Y") && !confirm.equals("N"))
+            {
+               System.out.print("Error: Invalid entry, please enter 'Y' to confirm or 'N' to cancel: ");
+               confirm = input.nextLine();
+            }
+            
+            if(confirm.equals("Y"))
+            {
+               changePassword(newID, updatedPass);
+            }
+            
+            if(confirm.equals("N"))
+            {
+               AdminMenu();
+            }            
+ 
+            
+             //changePassword(newID);
             //System.out.println("Option 3 Selected.");
          }
          if(option.equals("4"))
          {  
             //System.out.println("Option 4 Selected.");
             pullReports();
+            AdminMenu();
          }   
-         if(!option.equals("1") && !option.equals("2") && !option.equals("3") && !option.equals("4"))
-         {
-            System.out.println("Invalid selection.");
-         }
                  
-         option = input.nextLine();
+         //option = input.nextLine();
+      }
+      
+      if(option.equals("EXIT"))
+      {
+         System.exit(0);
       }
                
    }
@@ -430,13 +558,14 @@ class DataProject
 
       catch (Exception e)
       {
-          System.out.println("error inserting user");
+          System.out.println("Error inserting user");
          System.out.println(e.getMessage());
          System.out.println(e.getStackTrace().toString());
          System.exit(0);
       }
 
-      System.out.println("\nUser successfully added.\n");
+      System.out.println("\nUser successfully added.");
+      System.out.println("\nPassword has been defaulted to user's ID.");
 
       AdminMenu();       
 
@@ -484,7 +613,7 @@ class DataProject
          System.exit(0);
       }    
       
-      System.out.println("\nPassword successfully updated.\n");
+      System.out.println("\nPassword successfully changed.\n");
       AdminMenu();
              
    }
@@ -680,7 +809,7 @@ class DataProject
                    tryagain=true;
                    break;
                case 6:
-                   System.exit(1);
+                   System.exit(0);
                    break;
            }
        }
