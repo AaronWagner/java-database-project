@@ -861,6 +861,7 @@ class DataProject
    boolean validateStudentKey(String key)
    {
       boolean inputIsAKey=false;
+     
       if (studentPrimaryKey.contains(key))
       {
           inputIsAKey=true;
@@ -1702,10 +1703,10 @@ class DataProject
 
             //confirm course request information
             String key = studentNumber+" "+course_number+" "+semester+" "+request_year;
-		   boolean keyAlreadyExist=validateFacultyKey(key);
+		   boolean keyAlreadyExist=validateStudentKey(key);
 		   boolean alreadyInDatabase=false;
 		   if (keyAlreadyExist){
-			   System.out.println("\n-----This course request already exist");
+			   System.out.println("\n-----This course request already exist, please contact the DA to make changes");
 			   tryAgain = 0;
 			   submitRequest = false;
 			   alreadyInDatabase=true;
@@ -1778,7 +1779,7 @@ class DataProject
 
             //another course request?
             tryAgain = 1;
-            while(tryAgain == 1 && submitRequest != false){
+            while(tryAgain == 1 && (submitRequest == true || alreadyInDatabase==true)){
                 System.out.print("\nDo you have another course request?\n     Enter\n     1 for YES\n     0 for NO\n-----:");
                 try {
                     comInput=br.readLine();
@@ -2077,7 +2078,7 @@ class DataProject
 		   boolean keyAlreadyExist=validateFacultyKey(key);
 		   boolean alreadyInDatabase=false;
 		   if (keyAlreadyExist){
-			   System.out.println("\n-----This course request already exist");
+			   System.out.println("\n-----This course request already exist, please contact the DA to make changes");
 			   tryAgain = 0;
 			   submitRequest = false;
 			   alreadyInDatabase=true;
