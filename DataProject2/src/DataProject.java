@@ -268,13 +268,41 @@ class DataProject
          
          if(option.equals("1"))  
          {
+                             
             validNum = false;
-    
+            boolean userFound = false;
+                        
             while(validNum == false)
             {
    
             System.out.print("\nPlease enter new user's UNF ID: ");
             String stringID = input.nextLine();
+            
+         for(int i = 0; i < userNumber.size(); i++)
+         {
+            if(stringID.equals(userNumber.get(i)))
+            {
+               userFound = true;
+               //u = i;
+            }
+         }          
+         
+         while(userFound != false)
+         {
+            userFound = false;
+            System.out.print("Error: user ID already exists, please enter a new user ID: ");
+            stringID = input.nextLine();
+         
+         for(int i = 0; i < userNumber.size(); i++)
+         {
+            if(stringID.equals(userNumber.get(i)))
+            {
+               userFound = true;
+               //u = i;
+            }
+         }                
+            
+         }   
             
             try
             {
@@ -480,6 +508,7 @@ class DataProject
             while(updatedPass.length() > 15 || updatedPass.length() < 6)
             {
                System.out.println("Invalid password length, must be between 6 and 15 characters, please try again: ");
+               updatedPass = input.nextLine();
             }           
 
             System.out.println("\nAre you sure you want to change the password for user '" + newID + "' to '" + updatedPass + "'?");
@@ -567,24 +596,29 @@ class DataProject
 
    void insertUser(int studentNumber, String name, String userType, int permission)
    {
-        String password=Integer.toString(studentNumber);
+      String password=Integer.toString(studentNumber);
       try
       {
          Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
          Statement myStatment=myConnection.createStatement();
          String input = new String("insert into USERS values ( "+studentNumber+", '"+userType+"', '"+password+"', '"+name+"', "+permission+")");
-         myStatment.executeQuery (input);   //read javadocs for ResultsSet
+         myStatment.executeQuery(input);   //read javadocs for ResultsSet
+         myConnection.close();
+         
 
       }
 
       catch (Exception e)
       {
-          System.out.println("Error inserting user");
+         System.out.println("Error inserting user");
          System.out.println(e.getMessage());
          System.out.println(e.getStackTrace().toString());
          System.exit(0);
       }
 
+      initalizeValues();
+      
+            
       System.out.println("\nUser successfully added.");
       System.out.println("\nPassword has been defaulted to user's ID.");
 
@@ -599,17 +633,19 @@ class DataProject
          Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
          Statement myStatment=myConnection.createStatement();
          String input = new String("delete from USERS where ID=" +studentNumber);
-         myStatment.executeQuery (input);   //read javadocs for ResultsSet
-
+         myStatment.executeQuery(input);   //read javadocs for ResultsSet
+         myConnection.close();
       }
 
       catch (Exception e)
       {
-          System.out.println("Error deleting user");
+         System.out.println("Error deleting user");
          System.out.println(e.getMessage());
          System.out.println(e.getStackTrace().toString());
          System.exit(0);
       }     
+     
+      initalizeValues();
       
       System.out.println("\nUser successfully deleted.\n");  
       AdminMenu();
@@ -622,13 +658,14 @@ class DataProject
          Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@olympia.unfcsd.unf.edu:1521:dworcl", "teama5dm2f14", "team5ghjptw");
          Statement myStatment=myConnection.createStatement();
          String input = new String("update USERS set PASSWORD='" + password + "' where ID=" + studentNumber);
-         myStatment.executeQuery (input);   //read javadocs for ResultsSet
+         myStatment.executeQuery(input);   //read javadocs for ResultsSet
+         myConnection.close();
 
       }
 
       catch (Exception e)
       {
-          System.out.println("Error updating password");
+         System.out.println("Error updating password");
          System.out.println(e.getMessage());
          System.out.println(e.getStackTrace().toString());
          System.exit(0);
