@@ -24,6 +24,7 @@ class DataProject
     ArrayList<String> passwords;
     ArrayList<String> permissions;
     ArrayList<String> facultyPrimaryKey;
+    ArrayList<String> studentPrimaryKey;
 
    PreparedStatement addUser;
    PreparedStatement addStudentRequest;
@@ -657,6 +658,7 @@ class DataProject
        passwords=new ArrayList<String>();
        permissions=new ArrayList<String>();
        facultyPrimaryKey = new ArrayList<String>();
+       studentPrimaryKey = new ArrayList<String>();
        //ResultSet courseResult=null=new ArrayList<String>()
        try
        {
@@ -783,6 +785,46 @@ class DataProject
                System.out.println("Faculty_request results were empty.");
                //System.exit(0);
            }
+           
+           //populate student request unique keys
+           Statement myotherStatment3=myConnection.createStatement();
+           ResultSet studentRequestResult=myotherStatment3.executeQuery("select id, course_number, request_date, semester, request_year from student_request");
+		   String s_id;
+		   String s_course_number;
+		   String s_semester;
+		   String s_request_year;
+           isNotEmpty=false;
+           empty=true;
+           while (isNotEmpty=studentRequestResult.next())
+           {
+               //System.out.println("Got a user");
+               s_id=studentRequestResult.getString(1);
+               s_course_number=studentRequestResult.getString(2);
+               s_semester=studentRequestResult.getString(4);
+               s_request_year=studentRequestResult.getString(5);
+               
+			   //System.out.println(id+" "+course_number+" "+semester+" "+ request_year);
+			   studentPrimaryKey.add(s_id+" "+s_course_number+s_semester+" "+ s_request_year);
+
+			   //System.out.println("Student added "+studentName+" "+studentNumber+"\n");
+			   empty=false;
+               
+               
+               //String aCourse=courseResult.getString(1).trim();
+               //System.out.println("Course added: /"+aCourse+"/ \n");
+               //courseNumbers.add(aCourse);
+               if (!isNotEmpty)
+               {
+                   break;
+               }
+               empty=false;
+           }
+           //courseResult.close();
+           if (empty)
+           {
+               System.out.println("Faculty_request results were empty.");
+               //System.exit(0);
+           }
        }
        catch (SQLException g)
        {
@@ -809,6 +851,17 @@ class DataProject
    {
       boolean inputIsAKey=false;
       if (facultyPrimaryKey.contains(key))
+      {
+          inputIsAKey=true;
+      }
+      
+      return  inputIsAKey;  
+   }
+   
+   boolean validateStudentKey(String key)
+   {
+      boolean inputIsAKey=false;
+      if (studentPrimaryKey.contains(key))
       {
           inputIsAKey=true;
       }
@@ -1648,48 +1701,59 @@ class DataProject
             }
 
             //confirm course request information
-            tryAgain = 1;
-            System.out.println("\n\nIs the following request correct?");
-            System.out.println("-----------------------------------");
-            System.out.println("Student Number:   N00"+studentNumber);
-            System.out.println("Course Number:    "+course_number);
-            System.out.println("Semester:         "+semester);
-            System.out.println("Request Year:     "+request_year);
-            System.out.println("Days of the Week: "+week_day);
-            System.out.println("Time of the Day:  "+time_of_day);
-            System.out.println("-----------------------------------");
-            while(tryAgain == 1){
-                System.out.print("     Enter\n     1 for YES\n     0 for NO\n     2 to EXIT\n-----:");
-                try {
-					comInput=br.readLine();
-					if(isInteger(comInput)){
-						optionChoosen = Integer.parseInt(comInput);
+            String key = studentNumber+" "+course_number+" "+semester+" "+request_year;
+		   boolean keyAlreadyExist=validateFacultyKey(key);
+		   boolean alreadyInDatabase=false;
+		   if (keyAlreadyExist){
+			   System.out.println("\n-----This course request already exist");
+			   tryAgain = 0;
+			   submitRequest = false;
+			   alreadyInDatabase=true;
+		   }
+		   else{
+				tryAgain = 1;
+				System.out.println("\n\nIs the following request correct?");
+				System.out.println("-----------------------------------");
+				System.out.println("Student Number:   N00"+studentNumber);
+				System.out.println("Course Number:    "+course_number);
+				System.out.println("Semester:         "+semester);
+				System.out.println("Request Year:     "+request_year);
+				System.out.println("Days of the Week: "+week_day);
+				System.out.println("Time of the Day:  "+time_of_day);
+				System.out.println("-----------------------------------");
+				while(tryAgain == 1){
+					System.out.print("     Enter\n     1 for YES\n     0 for NO\n     2 to EXIT\n-----:");
+					try {
+						comInput=br.readLine();
+						if(isInteger(comInput)){
+							optionChoosen = Integer.parseInt(comInput);
+						}
+						else{
+							optionChoosen=-1;
+						}
+					} catch (IOException ioe) {
+						System.out.println("IO error trying to read your input!");
+						System.exit(1);
+					}
+					if(optionChoosen==1){
+						tryAgain = 0;
+						submitRequest = true;
+					}
+					else if(optionChoosen==0){
+						tryAgain = 0;
+						submitRequest = false;
+					}
+					else if(optionChoosen==2){
+						tryAgain = 0;
+						userFinished=1;
+						submitRequest = false;
 					}
 					else{
-						optionChoosen=-1;
+						System.out.println("     Incorrect input, please try again\n");
+						tryAgain = 1;
 					}
-                } catch (IOException ioe) {
-                    System.out.println("IO error trying to read your input!");
-                    System.exit(1);
-                }
-                if(optionChoosen==1){
-                    tryAgain = 0;
-                    submitRequest = true;
-                }
-                else if(optionChoosen==0){
-                    tryAgain = 0;
-                    submitRequest = false;
-                }
-                else if(optionChoosen==2){
-                    tryAgain = 0;
-                    userFinished=1;
-                    submitRequest = false;
-                }
-                else{
-                    System.out.println("     Incorrect input, please try again\n");
-                    tryAgain = 1;
-                }
-            }
+				}
+			}
 
             if(submitRequest == true){
                 try
