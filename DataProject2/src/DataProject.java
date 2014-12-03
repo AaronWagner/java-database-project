@@ -1039,10 +1039,10 @@ class DataProject
                System.out.println("There are no matching requests \n");
            }
            String facultyQuery=("Select * from faculty_request WHERE course_number = '"+requestedCourse+"'");
-           ResultSet facultyResults=myStatment.executeQuery(studentQuery);
+           ResultSet facultyResults=myStatment.executeQuery(facultyQuery);
            System.out.println(" \nFaculty Requests for "+requestedCourse+" on "+week_day+": \n"); //Todo insert column lables here
            isEmpty=true;
-           while (studentResults.next())
+           while (facultyResults.next())
            {
                //String 2 is not used it is the course number
 
@@ -1095,10 +1095,10 @@ class DataProject
                 System.out.println("There are no matching requests \n");
             }
             String facultyQuery=("Select * from faculty_request WHERE course_number = '"+course+"'"+" and time_of_day ='"+time+"'");
-            ResultSet facultyResults=myStatment.executeQuery(studentQuery);
+            ResultSet facultyResults=myStatment.executeQuery(facultyQuery);
             System.out.println(" \nFaculty Requests for "+course+"at time "+time+": \n"); //Todo insert column lables here
             isEmpty=true;
-            while (studentResults.next())
+            while (facultyResults.next())
             {
                 //String 2 is not used it is the course number
 
@@ -1251,10 +1251,10 @@ class DataProject
               System.out.println("There are no matching requests \n");
           }
 		  String facultyQuery=("Select * from faculty_request WHERE course_number = '"+course+"'"); 
-		  ResultSet facultyResults=myStatment.executeQuery(studentQuery);
+		  ResultSet facultyResults=myStatment.executeQuery(facultyQuery);
           System.out.println(" \nFaculty Requests for "+course+": \n"); //Todo insert column lables here
           isEmpty=true;
-          while (studentResults.next())
+          while (facultyResults.next())
 		  {
 			 //String 2 is not used it is the course number
 
